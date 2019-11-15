@@ -17,7 +17,7 @@ class Ad(models.Model) :
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Picture
-    picture = models.BinaryField(null=True, editable=True)
+    picture = models.BinaryField(null=True, editable=True, blank=True)
     content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
     # Shows up in the admin list
     def __str__(self):
@@ -53,8 +53,17 @@ class Gender(models.Model) :
 
     # Shows up in the admin list
     def __str__(self):
-        if len(self.name) < 15 : return self.name 
-        return self.name[:11] + ' ...'
+        return self.name
+
+class Nation(models.Model) :
+    name = models.CharField(
+            max_length=200,
+            validators=[MinLengthValidator(2, "Name must be greater than 2 characters")]
+    )
+    picture = models.BinaryField(null=True, editable=True, blank=True)
+    # Shows up in the admin list
+    def __str__(self):
+        return self.name
 
 class Season(models.Model) :
     name = models.CharField(
@@ -66,8 +75,7 @@ class Season(models.Model) :
     )
     # Shows up in the admin list
     def __str__(self):
-        if len(self.name) < 15 : return self.name 
-        return self.name[:11] + ' ...'
+        return self.name
 
 class Category(models.Model) :
     name = models.CharField(
@@ -81,8 +89,7 @@ class Category(models.Model) :
     updated_at = models.DateTimeField(auto_now=True)
     # Shows up in the admin list
     def __str__(self):
-        if len(self.name) < 15 : return self.name 
-        return self.name[:11] + ' ...'
+        return self.name
 
 class Brand(models.Model) :
     name = models.CharField(
@@ -92,15 +99,17 @@ class Brand(models.Model) :
     discription = models.TextField(
         validators=[MinLengthValidator(3, "Discription must be greater than 3 characters")]
     )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    nation = models.ForeignKey(Nation, on_delete=models.CASCADE, null=True)
     categories = models.ManyToManyField(Category, help_text='Choose the categories this brand have')
     genders = models.ManyToManyField(Gender, help_text='Choose the target genders this brand have')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    picture = models.BinaryField(null=True, editable=True, blank=True)
     # Shows up in the admin list
     def __str__(self):
-        if len(self.name) < 15 : return self.name 
-        return self.name[:11] + ' ...'
+        return self.name
+
 
 class Product(models.Model) :
     name = models.CharField(
@@ -120,11 +129,10 @@ class Product(models.Model) :
     categories = models.ManyToManyField(Category, help_text='Choose the categories this brand have')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    picture = models.BinaryField(null=True, editable=True, blank=True)
     # Shows up in the admin list
     def __str__(self):
-        if len(self.name) < 15 : return self.name 
-        return self.name[:11] + ' ...'
+        return self.name
 
 class CommentRating(models.Model) :
     text = models.TextField(
