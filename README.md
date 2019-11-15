@@ -2,7 +2,7 @@
 This is the repository for the final project of SI664.
 
 
-**I will cooperate with Shukai Fan with this project**
+**Cooperate with Shukai Fan for this project**
 
 In this project, we are going to make a django2 website served as a database for clothing. This website will be well integrated, aiming to create a perfectly organized information center for all the brands/products information about clothing.  
 
