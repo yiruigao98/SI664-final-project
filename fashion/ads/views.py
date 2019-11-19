@@ -101,8 +101,6 @@ class CommentCreateView(LoginRequiredMixin, View):
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
     template_name = "ads/comment_delete.html"
-
-    # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
     def get_success_url(self):
         ad = self.object.ad
         return reverse('ads:ad_detail', args=[ad.id])
