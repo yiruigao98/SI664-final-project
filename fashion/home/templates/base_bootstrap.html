@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <!-- Edit dj4e-samples/settings.py and add APP_NAME = 'DJ4E Samples' or similar -->
 <title>{% block title %}{{ settings.APP_NAME }}{% endblock %}</title>
 
-<!-- Replace this value (42-42) with the one provided by the autograder -->
-<meta name="wa4e" content="42-42">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<meta name="wa4e-code" content="99999999">
+<link rel="stylesheet" href="css/core-style.css">
 
 <link rel="stylesheet"
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
@@ -34,7 +35,8 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.2.7/webcomponents-loader.js"
   crossorigin="anonymous"></script>
@@ -43,14 +45,17 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.js"
   crossorigin="anonymous"></script>
 
-<meta name="wa4e-version" content="2019-10-25">
 
 </head>
+
+
 <body>
 {% block navbar %} {% endblock %}
 <div class="container">
     {% block content %}
     {% endblock %}
 </div>
+
+
 </body>
 </html>
