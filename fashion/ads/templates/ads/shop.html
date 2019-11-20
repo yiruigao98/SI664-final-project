@@ -1,47 +1,33 @@
-{% extends 'base_bootstrap.html' %}
-{% load app_tags %} <!-- see home/templatetags/app_tags.py -->
-{% block navbar %}
-<!-- https://www.w3schools.com/booTsTrap/bootstrap_navbar.asp -->
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="/">{{ settings.APP_NAME }}</a>
-    </div>
-    <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
-    <ul class="nav navbar-nav">
-      {% url 'ads' as ads %}
-      <li {% if request.get_full_path == ads %}class="active"{% endif %}>
-          <a href="{% url 'ads:ads' %}">Clothings</a></li>
-    </ul>
-    <ul class="nav navbar-right">
-        {% if user.is_authenticated %}
-        <li>
-        <a href="{% url 'ads:ad_create' %}">Create Ad</a>
-        </li>
-        <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="{% url 'logout' %}?next={% url 'ads:ads' %}">Logout</a></li>
-            </ul>
-        </li>
-        {% else %}
-        <li>
-        <a href="{% url 'login' %}?next={% url 'ads:ads' %}">Login</a>
-        </li>
-        {% endif %}
-    </ul>
-  </div>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
 
-<header class="header_area">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title  -->
+    <title>Essence - Fashion Ecommerce Template</title>
+
+    <!-- Favicon  -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="css/core-style.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header_area">
         <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
             <!-- Classy Menu -->
             <nav class="classy-navbar" id="essenceNav">
                 <!-- Logo -->
-                {% load staticfiles %}
-                <a class="nav-brand" href="#"><img src="{% static 'logo.png' %}" alt=""></a>
+                <a class="nav-brand" href="index.html"><img src="img/core-img/logo.png" alt=""></a>
                 <!-- Navbar Toggler -->
                 <div class="classy-navbar-toggler">
                     <span class="navbarToggler"><span></span><span></span><span></span></span>
@@ -803,6 +789,22 @@
             </div>
 
         </div>
-  {% endblock %}
+    </footer>
+    <!-- ##### Footer Area End ##### -->
 
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Classy Nav js -->
+    <script src="js/classy-nav.min.js"></script>
+    <!-- Active js -->
+    <script src="js/active.js"></script>
 
+</body>
+
+</html>

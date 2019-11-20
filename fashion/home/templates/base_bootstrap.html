@@ -5,10 +5,13 @@
 <title>{% block title %}{{ settings.APP_NAME }}{% endblock %}</title>
 
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<link rel="stylesheet" href="css/core-style.css">
+<!-- Favicon  -->
+{% load staticfiles %}
+<link rel="icon" href="{% static 'favicon.ico' %}">
+<link rel="stylesheet" href="{% static 'css/core-style.css' %}">
 
 <link rel="stylesheet"
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
@@ -45,6 +48,18 @@
   src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.js"
   crossorigin="anonymous"></script>
 
+  
+  <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+  <!-- Popper js -->
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap js -->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- Plugins js -->
+  <script src="{% static 'js/plugins.js' %}"></script>
+  <!-- Classy Nav js -->
+  <script src="{% static 'js/classy-nav.min.js' %}"></script>
+  <!-- Active js -->
+  <script src="{% static 'js/active.js' %}"></script>
 
 </head>
 
