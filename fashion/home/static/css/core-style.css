@@ -11,6 +11,14 @@
 @import url(../css/jquery-ui.min.css);
 @import url(../css/nice-select.css);
 @import url(../css/font-awesome.min.css);
+/* @import url("{% static 'css/bootstrap.css' %}");
+@import url("{% static 'css/core-style.css' %}");
+@import url("{% static 'css/animate.css' %}");
+@import url("{% static 'css/font-awesome.min.css' %}");
+@import url("{% static 'css/jquery-ui.min.css' %}");
+@import url("{% static 'css/magnific-popup.css' %}");
+@import url("{% static 'css/nice.css' %}"); */
+
 /* :: 3.0 Common/Base CSS */
 * {
   margin: 0;
