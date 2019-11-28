@@ -106,6 +106,7 @@ class Brand(models.Model) :
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     picture = models.BinaryField(null=True, editable=True, blank=True)
+    content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
     # Shows up in the admin list
     def __str__(self):
         return self.name
@@ -130,6 +131,7 @@ class Product(models.Model) :
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     picture = models.BinaryField(null=True, editable=True, blank=True)
+    content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
     # Shows up in the admin list
     def __str__(self):
         return self.name

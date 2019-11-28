@@ -5,102 +5,260 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse_lazy
 from django.http import HttpResponse
-from ads.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
-from ads.models import Ad, Comment
-from ads.forms import CreateForm
-from ads.forms import CommentForm
+from fashion.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
+from fashion.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
+from fashion.forms import BrandCreateForm, ProductCreateForm
+from fashion.forms import CommentForm
 from django.urls import reverse
 
-class AdListView(OwnerListView):
-    model = Ad
-    template_name = "ads/ads_list.html"
 
-class AdDetailView(OwnerDetailView):
-    model = Ad
-    template_name = "ads/ads_detail.html"
+###############################################
+################ Nation #######################
+###############################################
+
+class NationView(LoginRequiredMixin, View):
+    model = Nation
+    template_name = "fashions/nation_list.html"
+
+class NationDetailView(LoginRequiredMixin, View):
+    model = Nation
+    template_name = "fashions/nation_detail.html"
     def get(self, request, pk) :
-        ad = Ad.objects.get(id=pk)
-        comments = Comment.objects.filter(ad=ad).order_by('-updated_at')
-        comment_form = CommentForm()
-        context = { 'ad' : ad, 'comments': comments, 'comment_form': comment_form }
+        nation = Nation.objects.get(id=pk)
+        brands = Brand.objects.filter(Nation=nation).order_by('-updated_at')
+        context = {'brands' : brands}
         return render(request, self.template_name, context)
-# class AdCreateView(OwnerCreateView):
-#     model = Ad
-#     fields = ['title', 'text', 'price']
-#     template_name = "ads/ads_form.html"
 
-class AdCreateView(LoginRequiredMixin, View):
-    template = "ads/ads_form.html"
-    success_url = reverse_lazy('ads:ads')
+###############################################
+################ Gender #######################
+###############################################
+
+class GenderView(LoginRequiredMixin, View):
+    model = Gender
+    template_name = "fashions/gender_list.html"
+
+class GenderDetailView(LoginRequiredMixin, View):
+    model = Gender
+    template_name = "fashions/gender_detail.html"
+    def get(self, request, pk) :
+        gender = Gender.objects.get(id=pk)
+        brands = Brand.objects.filter(Gender=gender).order_by('-updated_at')
+        context = {'brands' : brands}
+        return render(request, self.template_name, context)
+
+###############################################
+################ Category #####################
+###############################################
+
+class CategoryView(LoginRequiredMixin, View):
+    model = Brand
+    template_name = "fashions/category_list.html"
+
+class CategoryDetailView(LoginRequiredMixin, View):
+    model = Category
+    template_name = "fashions/category_detail.html"
+    def get(self, request, pk) :
+        category = Category.objects.get(id=pk)
+        brands = Brand.objects.filter(Category=category).order_by('-updated_at')
+        context = {'brands' : brands}
+        return render(request, self.template_name, context)
+
+###############################################
+################ Brand ########################
+###############################################
+
+class FilteredBrandView(LoginRequiredMixin, View):
+    model = Brand
+    template_name = "fashions/filtered_brand_list.html"
+    def get(self, request, category_pk, gender_pk):
+        if(category_pk is not -1): 
+            category = Category.objects.get(id=category_pk)
+        if(gender_pk is not -1): 
+            gender = Gender.objects.get(id=gender_pk)
+        if(gender_pk == -1):
+            brands = Brand.objects.filter(Category=category).order_by('-updated_at')
+        elif(category_pk == -1):
+            brands = Brand.objects.filter(Gender=gender).order_by('-updated_at')
+        else:
+            brands = Brand.objects.filter(Category=category, Gender=gender).order_by('-updated_at')
+        context = { 'brands' : brands}
+        return render(request, self.template_name, context)
+
+class BrandView(LoginRequiredMixin, View):
+    model = Brand
+    template_name = "fashions/brand_list.html"
+
+class BrandDetailView(LoginRequiredMixin, View):
+    model = Brand
+    template_name = "fashions/brand_detail.html"
+    def get(self, request, pk) :
+        brand = Brand.objects.get(id=pk)
+        products = Product.objects.filter(Brand=brand).order_by('-updated_at')
+        context = { 'brands' : brand, 'products': products}
+        return render(request, self.template_name, context)
+
+class BrandCreateView(LoginRequiredMixin, View):
+    template = "fashions/brand_form.html"
+    success_url = reverse_lazy('fashions:brand')
     def get(self, request, pk=None) :
-        form = CreateForm()
-        ctx = { 'form': form }
+        form = BrandCreateForm()
+        ctx = { 'form': form } 
         return render(request, self.template, ctx)
 
     def post(self, request, pk=None) :
-        form = CreateForm(request.POST, request.FILES or None)
+        form = BrandCreateForm(request.POST, request.FILES or None)
 
         if not form.is_valid() :
             ctx = {'form' : form}
             return render(request, self.template, ctx)
 
         # Add owner to the model before saving
-        ad = form.save(commit=False)
-        ad.owner = self.request.user
-        ad.save()
+        brand = form.save(commit=False)
+        brand.owner = self.request.user
+        brand.save()
         return redirect(self.success_url)
 
-# class AdUpdateView(OwnerUpdateView):
-#     model = Ad
-#     fields = ['title', 'text', 'price']
-#     template_name = "ads/ads_form.html"
-
-class AdUpdateView(LoginRequiredMixin, View):
-    template = "ads/ads_form.html"
-    success_url = reverse_lazy('ads:ads')
+class BrandUpdateView(OwnerUpdateView):
+    template = "fashions/brand_form.html"
+    success_url = reverse_lazy('fashions:brand')
     def get(self, request, pk) :
-        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
-        form = CreateForm(instance=ad)
-        ctx = { 'form': form }
+        brand = get_object_or_404(Brand, id=pk, owner=self.request.user)
+        form = BrandCreateForm(instance=brand)
+        ctx = {'form': form }
         return render(request, self.template, ctx)
 
     def post(self, request, pk=None) :
-        ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
-        form = CreateForm(request.POST, request.FILES or None, instance=ad)
+        brand = get_object_or_404(Brand, id=pk, owner=self.request.user)
+        form = BrandCreateForm(request.POST, request.FILES or None, instance=brand)
 
         if not form.is_valid() :
             ctx = {'form' : form}
             return render(request, self.template, ctx)
 
-        ad = form.save(commit=False)
-        ad.save()
+        brand = form.save(commit=False)
+        brand.save()
 
         return redirect(self.success_url)
 
-class AdDeleteView(OwnerDeleteView):
-    model = Ad
-    template_name = "ads/ads_delete.html"
+class BrandDeleteView(OwnerDeleteView):
+    model = Brand
+    template_name = "fashions/brand_delete.html"
 
-def stream_file(request, pk) :
-    ad = get_object_or_404(Ad, id=pk)
+
+def Brand_stream_file(request, pk) :
+    brand = get_object_or_404(Brand, id=pk)
     response = HttpResponse()
-    response['Content-Type'] = ad.content_type
-    response['Content-Length'] = len(ad.picture)
-    response.write(ad.picture)
+    response['Content-Type'] = brand.content_type
+    response['Content-Length'] = len(brand.picture)
+    response.write(brand.picture)
     return response
+
+###############################################
+################ Product ######################
+###############################################
+
+class FilteredProductView(LoginRequiredMixin, View):
+    model = Product
+    template_name = "fashions/filtered_product_list.html"
+    def get(self, request, category_pk, gender_pk, season_pk):
+        if(category_pk is not -1): 
+            category = Category.objects.get(id=category_pk)
+        if(gender_pk is not -1): 
+            gender = Gender.objects.get(id=gender_pk)
+        if(gender_pk == -1):
+            products = Product.objects.filter(Category=category).order_by('-updated_at')
+        elif(category_pk == -1):
+            products = Product.objects.filter(Gender=gender).order_by('-updated_at')
+        else:
+            products = Product.objects.filter(Category=category, Gender=gender).order_by('-updated_at')
+        context = { 'products' : products}
+        return render(request, self.template_name, context)
+
+class ProductView(LoginRequiredMixin, View):
+    model = Product
+    template_name = "fashions/product_list.html"
+
+class ProductDetailView(LoginRequiredMixin, View):
+    model = Product
+    template_name = "fashions/product_detail.html"
+    def get(self, request, pk) :
+        product = Product.objects.get(id=pk)
+        comments = CommentRating.objects.filter(product=product).order_by('-updated_at')
+        comment_form = CommentForm()
+        context = { 'product' : product, 'comments': comments, 'comment_form': comment_form }
+        return render(request, self.template_name, context)
+
+class ProductCreateView(LoginRequiredMixin, View):
+    template = "fashions/product_form.html"
+    success_url = reverse_lazy('fashions:product')
+    def get(self, request, pk=None) :
+        form = ProductCreateForm()
+        ctx = {'form': form } 
+        return render(request, self.template, ctx)
+
+    def post(self, request, pk=None) :
+        form = ProductCreateForm(request.POST, request.FILES or None)
+
+        if not form.is_valid() :
+            ctx = {'form' : form}
+            return render(request, self.template, ctx)
+
+        # Add owner to the model before saving
+        product = form.save(commit=False)
+        product.owner = self.request.user
+        product.save()
+        return redirect(self.success_url)
+
+class ProductUpdateView(OwnerUpdateView):
+    template = "fashions/product_form.html"
+    success_url = reverse_lazy('fashions:product')
+    def get(self, request, pk) :
+        product = get_object_or_404(Product, id=pk, owner=self.request.user)
+        form = BrandCreateForm(instance=product)
+        ctx = {'form': form }
+        return render(request, self.template, ctx)
+
+    def post(self, request, pk=None) :
+        product = get_object_or_404(Product, id=pk, owner=self.request.user)
+        form = ProductCreateForm(request.POST, request.FILES or None, instance=product)
+
+        if not form.is_valid() :
+            ctx = {'form' : form}
+            return render(request, self.template, ctx)
+
+        product = form.save(commit=False)
+        product.save()
+
+        return redirect(self.success_url)
+
+class ProductDeleteView(OwnerDeleteView):
+    model = Product
+    template_name = "fashions/product_delete.html"
+
+
+def Product_stream_file(request, pk) :
+    product = get_object_or_404(Product, id=pk)
+    response = HttpResponse()
+    response['Content-Type'] = product.content_type
+    response['Content-Length'] = len(product.picture)
+    response.write(product.picture)
+    return response
+
+
+#######################
 
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk) :
-        a = get_object_or_404(Ad, id=pk)
+        a = get_object_or_404(Product, id=pk)
         comment_form = CommentForm(request.POST)
 
-        comment = Comment(text=request.POST['comment'], owner=request.user, ad=a)
+        comment = CommentRating(text=request.POST['comment'], rating = request.POST['rating'] , owner=request.user, product = a)
         comment.save()
-        return redirect(reverse('ads:ad_detail', args=[pk]))
+        return redirect(reverse('fashions:product_detail', args=[pk]))
 
 class CommentDeleteView(OwnerDeleteView):
-    model = Comment
-    template_name = "ads/comment_delete.html"
+    model = CommentRating
+    template_name = "fashions/comment_delete.html"
     def get_success_url(self):
-        ad = self.object.ad
-        return reverse('ads:ad_detail', args=[ad.id])
+        product = self.object.product
+        return reverse('fashions:product_detail', args=[product.id])
