@@ -1,6 +1,8 @@
 {% extends "fashions/base_menu.html" %}
 {% load crispy_forms_tags %}
+
 {% load staticfiles %}
+
 {% block navbar %}
 <nav class="navbar navbar-default"></nav>
 <header class="header_area">
@@ -76,14 +78,16 @@
                     </div>
                 </div>
             </div>
-<p>
-  <form action="" method="post" id="upload_form" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="Submit">
-    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'fashions:all' %}';return false;">
-  </form>
-</p>
+ <div class = "forms" style="background-image: url({% static 'img/form_br.jpg' %});">           
+    <p>
+    <form action="" method="post" id="upload_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Submit">
+        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'fashions:all' %}';return false;">
+    </form>
+    </p>
+</div>
 <script>
 $("#upload_form").submit(function() {
   console.log('Checking file size');

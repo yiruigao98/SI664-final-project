@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from fashions.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 from fashions.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
-from fashions.forms import BrandCreateForm, ProductCreateForm
+from fashions.forms import BrandCreateForm, ProductCreateForm, NationCreateForm, CategoryCreateForm, GenderCreateForm
 from fashions.forms import CommentForm
 from django.urls import reverse
 
@@ -29,6 +29,27 @@ class NationDetailView(OwnerDetailView):
         context = {'brands' : brands}
         return render(request, self.template_name, context)
 
+class NationCreateView(LoginRequiredMixin, View):
+    template = "fashions/nation_form.html"
+    success_url = reverse_lazy('fashions:all')
+    def get(self, request, pk=None) :
+        form = NationCreateForm()
+        ctx = { 'form': form } 
+        return render(request, self.template, ctx)
+
+    def post(self, request, pk=None) :
+        form = NationCreateForm(request.POST, request.FILES or None)
+
+        if not form.is_valid() :
+            ctx = {'form' : form}
+            return render(request, self.template, ctx)
+
+        # Add owner to the model before saving
+        nation = form.save(commit=False)
+        nation.owner = self.request.user
+        nation.save()
+        return redirect(self.success_url)
+
 ###############################################
 ################ Gender #######################
 ###############################################
@@ -46,6 +67,27 @@ class GenderDetailView(OwnerDetailView):
         context = {'brands' : brands}
         return render(request, self.template_name, context)
 
+class GenderCreateView(LoginRequiredMixin, View):
+    template = "fashions/gender_form.html"
+    success_url = reverse_lazy('fashions:all')
+    def get(self, request, pk=None) :
+        form = GenderCreateForm()
+        ctx = { 'form': form } 
+        return render(request, self.template, ctx)
+
+    def post(self, request, pk=None) :
+        form = GenderCreateForm(request.POST, request.FILES or None)
+
+        if not form.is_valid() :
+            ctx = {'form' : form}
+            return render(request, self.template, ctx)
+
+        # Add owner to the model before saving
+        gender = form.save(commit=False)
+        gender.owner = self.request.user
+        gender.save()
+        return redirect(self.success_url)
+
 ###############################################
 ################ Category #####################
 ###############################################
@@ -62,6 +104,27 @@ class CategoryDetailView(OwnerDetailView):
         brands = Brand.objects.filter(Category=category).order_by('-updated_at')
         context = {'brands' : brands}
         return render(request, self.template_name, context)
+
+class CategoryCreateView(LoginRequiredMixin, View):
+    template = "fashions/category_form.html"
+    success_url = reverse_lazy('fashions:all')
+    def get(self, request, pk=None) :
+        form = CategoryCreateForm()
+        ctx = { 'form': form } 
+        return render(request, self.template, ctx)
+
+    def post(self, request, pk=None) :
+        form = CategoryCreateForm(request.POST, request.FILES or None)
+
+        if not form.is_valid() :
+            ctx = {'form' : form}
+            return render(request, self.template, ctx)
+
+        # Add owner to the model before saving
+        category = form.save(commit=False)
+        category.owner = self.request.user
+        category.save()
+        return redirect(self.success_url)
 
 ###############################################
 ################ Brand ########################

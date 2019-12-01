@@ -2,6 +2,7 @@
 
 {% load app_tags %} <!-- see home/templatetags/app_tags.py -->
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block navbar %}
 <!-- https://www.w3schools.com/booTsTrap/bootstrap_navbar.asp -->
@@ -99,69 +100,35 @@
                             <div class="catagories-menu">
                                 <ul id="menu-content2" class="menu-content collapse show">
                                     <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#gender">
+                                    <li data-toggle="collapse" data-target="#shoes" class="collapsed">
                                             <a href="#">Genders</a>
-                                            <ul class="sub-menu collapse" id="gender">
-                                                    <li><a href="{% url 'fashions:gender_create' %}"><font size="3" color="green">Add a new gender</font></a></li>
-                                                    <li><a href="{% url 'fashions:brand' %}">All</a></li>
-                                                    <p>
-                                                            {% if gender_list %}
-                                                            <ul>
-                                                              {% for gender in gender_list %}
-                                                                <li>
-                                                                    <a href="{% url 'fashions:brand_detail'  gender.id %}">{{ gender.name }}</a>
-                                                                    <br/>
-                                                                </li>
-                                                              {% endfor %}
-                                                            </ul>
-                                                            {% else %}
-                                                              <p>There are no genders currently.</p>
-                                                            {% endif %}
-                                                            </p>
-                                                </ul>                                   
+                                            <ul class="sub-menu collapse" id="shoes">
+                                                <li><a href="{% url 'fashions:brand' %}">All</a></li>
+                                                <li><a href="{% url 'fashions:brand' %}">Male</a></li>
+                                                <li><a href="{% url 'fashions:brand' %}">Female</a></li>
+                                            </ul>
+                                        </li>                                    
                                     <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#country">
+                                    <li data-toggle="collapse" data-target="#clothing">
                                         <a href="#">Countries</a>
-                                        <ul class="sub-menu collapse" id="country">
-                                            <li><a href="{% url 'fashions:nation_create' %}"><font size="3" color="orange">Add a new country</font></a></li>
-                                            <li><a href="{% url 'fashions:brand' %}">All</a></li>
-                                                    <p>
-                                                    {% if nation_list %}
-                                                    <ul>
-                                                      {% for nation in nation_list %}
-                                                        <li>
-                                                            <a href="{% url 'fashions:brand_detail'  nation.id %}">{{ nation.name }}</a>
-                                                            <br/>
-                                                        </li>
-                                                      {% endfor %}
-                                                    </ul>
-                                                    {% else %}
-                                                      <p>There are no nations currently.</p>
-                                                    {% endif %}
-                                                    </p>
-                                        </ul>
+                                        <ul class="sub-menu collapse" id="shoes">
+                                                <li><a href="{% url 'fashions:brand' %}">All</a></li>
+                                            </ul>
+
                                     </li>
                                     <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#category">
+                                    <li data-toggle="collapse" data-target="#accessories" class="collapsed">
                                             <a href="#">Categories</a>
-                                        <ul class="sub-menu collapse" id="category">
-                                            <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
-                                            <li><a href="{% url 'fashions:brand' %}">All</a></li>
-                                            <p>
-                                                    {% if category_list %}
-                                                    <ul>
-                                                      {% for category in category_list %}
-                                                        <li>
-                                                            <a href="{% url 'fashions:brand_detail'  category.id %}">{{ category.name }}</a>
-                                                            <br/>
-                                                        </li>
-                                                      {% endfor %}
-                                                    </ul>
-                                                    {% else %}
-                                                      <p>There are no categories currently.</p>
-                                                    {% endif %}
+                                            <div class = "sideforms">           
+                                                    <p>
+                                                    <form action="" method="post" id="upload_form" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        {{ form|crispy }}
+                                                        <input type="submit" value="Submit">
+                                                        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'fashions:all' %}';return false;">
+                                                    </form>
                                                     </p>
-                                        </ul>
+                                            </div>
                                     </li>
                                 </ul>
                             </div>
@@ -193,7 +160,7 @@
                             <ul>
                               {% for brand in brand_list %}
                                 <li>
-                                    <a href="{% url 'fashions:brand_detail'  brand.id %}">{{ brand.name }}</a>
+                                    <a href="{% url 'fashions:brand_detail'  brand.id %}">{{ brand.title }}</a>
                                     {% if brand.owner == user %}
                                     (<a href="{% url 'fashions:brand_update' brand.id %}">Edit</a> |
                                     <a href="{% url 'fashions:brand_delete' brand.id %}">Delete</a>)
@@ -201,10 +168,10 @@
                                     {% endif %}
                                     <br/>
                                     <div style="left:10px">
-                                        {% if brand.description|length < 100 %}
-                                            {{ brand.description }}
+                                        {% if brand.text|length < 100 %}
+                                            {{ brand.text }}
                                         {% else %}
-                                            {{ brand.description|slice:"0:99" }}
+                                            {{ brand.text|slice:"0:99" }}
                                             <a href="{% url 'fashions:brand_detail'  brand.id %}">...</a>
                                         {% endif %}
                                     </div>

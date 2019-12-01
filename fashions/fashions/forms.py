@@ -10,6 +10,42 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # https://docs.djangoproject.com/en/2.1/ref/forms/validation/#cleaning-and-validating-fields-that-depend-on-each-other
 
 # Create the form class.
+class NationCreateForm(forms.ModelForm):
+    max_upload_limit = 2 * 1024 * 1024
+    max_upload_limit_text = naturalsize(max_upload_limit)
+
+    # Call this 'picture' so it gets copied from the form to the in-memory model
+    # It will not be the "bytes", it will be the "InMemoryUploadedFile"
+    # because we need to pull out things like content_type
+
+    class Meta:
+        model = Nation
+        fields = ['name']  # Picture is manual
+
+class CategoryCreateForm(forms.ModelForm):
+    max_upload_limit = 2 * 1024 * 1024
+    max_upload_limit_text = naturalsize(max_upload_limit)
+
+    # Call this 'picture' so it gets copied from the form to the in-memory model
+    # It will not be the "bytes", it will be the "InMemoryUploadedFile"
+    # because we need to pull out things like content_type
+
+    class Meta:
+        model = Category
+        fields = ['name']  # Picture is manual
+
+class GenderCreateForm(forms.ModelForm):
+    max_upload_limit = 2 * 1024 * 1024
+    max_upload_limit_text = naturalsize(max_upload_limit)
+
+    # Call this 'picture' so it gets copied from the form to the in-memory model
+    # It will not be the "bytes", it will be the "InMemoryUploadedFile"
+    # because we need to pull out things like content_type
+
+    class Meta:
+        model = Gender
+        fields = ['name']  # Picture is manual
+
 class BrandCreateForm(forms.ModelForm):
     max_upload_limit = 2 * 1024 * 1024
     max_upload_limit_text = naturalsize(max_upload_limit)
