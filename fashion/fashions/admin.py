@@ -1,6 +1,6 @@
 from django.contrib import admin
-from ads.models import Gender, Season, Category, Brand, Product, CommentRating, Nation
-from ads.models import Ad, Comment
+from fashions.models import Gender, Season, Category, Brand, Product, CommentRating, Nation
+# from fashions.models import Ad, Comment
 # Register your models here.
 
 # admin.site.register(Ad)

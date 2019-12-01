@@ -5,10 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse_lazy
 from django.http import HttpResponse
-from fashion.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
-from fashion.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
-from fashion.forms import BrandCreateForm, ProductCreateForm
-from fashion.forms import CommentForm
+from fashions.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
+from fashions.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
+from fashions.forms import BrandCreateForm, ProductCreateForm
+from fashions.forms import CommentForm
 from django.urls import reverse
 
 

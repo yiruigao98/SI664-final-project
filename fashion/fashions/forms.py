@@ -1,7 +1,7 @@
 from django import forms
-from fashion.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
+from fashions.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from ads.humanize import naturalsize
+from fashions.humanize import naturalsize
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # https://docs.djangoproject.com/en/2.1/topics/http/file-uploads/
@@ -61,7 +61,7 @@ class ProductCreateForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'discription','categories', 'nation', 'gender','sales', 'price', 'picture', 'season', 'brand']  # Picture is manual
+        fields = ['name', 'discription','categories', 'gender','sales', 'price', 'picture', 'season', 'brand']  # Picture is manual
 
     # Validate the size of the picture
     def clean(self) :
@@ -91,7 +91,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(required=False, max_length=500, min_length=3, strip=True)
     rating = forms.IntegerField(
         required = True,
-        default=5,
+        label = 5,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(0)
