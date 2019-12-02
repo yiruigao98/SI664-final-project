@@ -153,13 +153,21 @@ class FilteredBrandView(OwnerListView):
 class BrandView(OwnerListView):
     model = Brand
     template_name = "fashions/brand_list.html"
+    def get(self, request) :
+        brands = Brand.objects.all()
+        gender_list = Gender.objects.all()
+        nation_list = Nation.objects.all()
+        category_list = Category.objects.all()
+        context = { 'brands' : brands, 'gender_list': gender_list, 'nation_list' : nation_list, 'category_list' : category_list}
+        return render(request, self.template_name, context)
 
 class BrandDetailView(OwnerDetailView):
     model = Brand
     template_name = "fashions/brand_detail.html"
     def get(self, request, pk) :
         brand = Brand.objects.get(id=pk)
-        products = Product.objects.filter(Brand=brand).order_by('-updated_at')
+        products = Product.objects.filter(brand=brand).order_by('-updated_at')
+        gender_list = Gender.objects.all()
         context = { 'brands' : brand, 'products': products}
         return render(request, self.template_name, context)
 
