@@ -168,7 +168,9 @@ class BrandDetailView(OwnerDetailView):
         brand = Brand.objects.get(id=pk)
         products = Product.objects.filter(brand=brand).order_by('-updated_at')
         gender_list = Gender.objects.all()
-        context = { 'brands' : brand, 'products': products}
+        nation_list = Nation.objects.all()
+        category_list = Category.objects.all()
+        context = { 'brand': brand, 'products': products, 'gender_list': gender_list, 'nation_list' : nation_list, 'category_list' : category_list}
         return render(request, self.template_name, context)
 
 class BrandCreateView(LoginRequiredMixin, View):

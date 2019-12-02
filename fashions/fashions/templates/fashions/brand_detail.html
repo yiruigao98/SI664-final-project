@@ -49,7 +49,7 @@
             <!--  -->
             <!-- Favourite Area -->
             <div class="favourite-area">
-                <a href="{% url 'fashions:brand_create' %}"><font size="-1"> 𝒩ℯ𝓌 ℬ𝓇𝒶𝓃𝒹 </font></a>
+                <a href="{% url 'fashions:brand_create' %}"><font size="-1"> 𝒩ℯ𝓌 Product </font></a>
             </div>
             <!-- User Login Info -->
             <div class="user-login-info">
@@ -100,25 +100,17 @@
                                 <ul id="menu-content2" class="menu-content collapse show">
                                     <!-- Single Item -->
                                     <li data-toggle="collapse" data-target="#gender">
-                                            <a href="#">Genders</a>
-                                            <ul class="sub-menu collapse" id="gender">
-                                                    <li><a href="{% url 'fashions:gender_create' %}"><font size="3" color="green">Add a new gender</font></a></li>
-                                                    <li><a href="{% url 'fashions:brand' %}">All</a></li>
-                                                    <p>
-                                                            {% if gender_list %}
-                                                            <ul>
-                                                              {% for gender in gender_list %}
-                                                                <li>
-                                                                    <a href="{% url 'fashions:brand_detail'  gender.id %}">{{ gender.name }}</a>
-                                                                    <br/>
-                                                                </li>
-                                                              {% endfor %}
-                                                            </ul>
-                                                            {% else %}
-                                                              <p>There are no genders currently.</p>
-                                                            {% endif %}
-                                                            </p>
-                                                </ul>                                   
+                                        <a href="#">Genders</a>
+                                        <ul class="sub-menu collapse" id="gender">
+                                                <p>
+                                                    {% for gender in gender_list %}
+                                                        <li>
+                                                            <a href="#">{{ gender.name }}</a>
+                                                            <br/>
+                                                        </li>
+                                                    {% endfor %}
+                                                </p>
+                                            </ul>                                 
                                     <!-- Single Item -->
                                     <li data-toggle="collapse" data-target="#country">
                                         <a href="#">Countries</a>
@@ -182,7 +174,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="product-description"><h1>Brands</h1></div>
+                        <div class="product-description"></div>
                         
                         <span style="float: right;">
                                 ({{ brand.updated_at|naturaltime }})
@@ -190,25 +182,23 @@
                                 <a href="{% url 'fashions:brand_update' brand.id %}"><i class="fa fa-pencil"></i></a>
                                 <a href="{% url 'fashions:brand_delete' brand.id %}"><i class="fa fa-trash"></i></a>
                                 {% endif %}
-                                </span>
+                        </span>
                                 <h1>{{ brand.name }}</h1>
+                                <br>
                                 <p>
-                                {{ brand.country }}
+                                Country: {{ brand.nation }}
                                 </p>
                                 <p>
-                                {{ brand.gender }}
+                                Genders: {{ brand.genders.all}}
                                 </p>
                                 <p>
-                                {{ brand.category }}
+                                Categories: {{ brand.categories.all }}
                                 </p>
                                 <p>
                                 <a href="{% url 'fashions:all' %}">All brands</a>
                                 </p>
-                                {% if brand.content_type %}
+                                {% if ad.content_type %}
                                 <img style="float:center; max-width:50%;" src="{% url 'fashions:brand_picture' brand.id %}">
-                                {% endif %}
-                                {% if user.is_authenticated %}
-                                <br clear="all"/>
                                 {% endif %}
                 </div>
             </div>

@@ -102,29 +102,20 @@
                                     <li data-toggle="collapse" data-target="#gender">
                                             <a href="#">Genders</a>
                                             <ul class="sub-menu collapse" id="gender">
-                                                    <li><a href="{% url 'fashions:gender_create' %}"><font size="3" color="green">Add a new gender</font></a></li>
-                                                    <li><a href="{% url 'fashions:brand' %}">All</a></li>
                                                     <p>
-                                                            {% if gender_list %}
-                                                            <ul>
-                                                              {% for gender in gender_list %}
-                                                                <li>
-                                                                    <a href="{% url 'fashions:brand_detail'  gender.id %}">{{ gender.name }}</a>
-                                                                    <br/>
-                                                                </li>
-                                                              {% endfor %}
-                                                            </ul>
-                                                            {% else %}
-                                                              <p>There are no genders currently.</p>
-                                                            {% endif %}
-                                                            </p>
+                                                        {% for gender in gender_list %}
+                                                            <li>
+                                                                <a href="#">{{ gender.name }}</a>
+                                                                <br/>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </p>
                                                 </ul>                                   
                                     <!-- Single Item -->
                                     <li data-toggle="collapse" data-target="#country">
                                         <a href="#">Countries</a>
                                         <ul class="sub-menu collapse" id="country">
                                             <li><a href="{% url 'fashions:nation_create' %}"><font size="3" color="orange">Add a new country</font></a></li>
-                                            <li><a href="{% url 'fashions:brand' %}">All</a></li>
                                                     <p>
                                                     {% if nation_list %}
                                                     <ul>
@@ -146,7 +137,6 @@
                                             <a href="#">Categories</a>
                                         <ul class="sub-menu collapse" id="category">
                                             <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
-                                            <li><a href="{% url 'fashions:brand' %}">All</a></li>
                                             <p>
                                                     {% if category_list %}
                                                     <ul>
@@ -183,15 +173,15 @@
                             </div>
                         </div>
                         <div class="product-description"><h1>Brands</h1></div>
-                        
+                        <br>
                         <div style="float:right">
                             <a href="{% url 'fashions:all' %}"><i class="fa fa-undo"></i></a>
                             </form>
                             </div>
                             <p>
-                            {% if brand_list %}
+                            {% if brands %}
                             <ul>
-                              {% for brand in brand_list %}
+                              {% for brand in brands %}
                                 <li>
                                     <a href="{% url 'fashions:brand_detail'  brand.id %}">{{ brand.name }}</a>
                                     {% if brand.owner == user %}
@@ -224,18 +214,6 @@
                             {% endif %}
                             </p>
                             
-                            <script>
-                            function favPost(url, ad_id) {
-                                console.log('Requesting JSON');
-                                $.post(url, {},  function(rowz){
-                                    console.log(url, 'finished');
-                                    $("#unfavorite_star_"+ad_id).toggle();
-                                    $("#favorite_star_"+ad_id).toggle();
-                                }).fail(function(xhr) {
-                                    alert('Url failed with '+xhr.status+' '+url);
-                                });
-                            }
-                            </script>
                     </div>
                 </div>
             </div>
