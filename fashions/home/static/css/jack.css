@@ -1,0 +1,10 @@
+{% load staticfiles %}
+.forms{
+    background-color: rgb(220, 220, 220);
+    margin: 20px;
+    padding: 40px;  
+}
+.sideforms{
+    margin: 10px;
+    padding: 10px;  
+}

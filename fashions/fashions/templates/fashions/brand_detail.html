@@ -1,0 +1,219 @@
+{% extends "fashions/base_menu.html" %}
+
+{% load app_tags %} <!-- see home/templatetags/app_tags.py -->
+{% load staticfiles %}
+{% load humanize %}
+{% block navbar %}
+<!-- https://www.w3schools.com/booTsTrap/bootstrap_navbar.asp -->
+
+<nav class="navbar navbar-default"></nav>
+<header class="header_area">
+
+    <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+        <!-- Classy Menu -->
+        <nav class="classy-navbar" id="essenceNav">
+            <!-- Logo -->
+            <a class="nav-brand" href="#"><img src="{% static 'KJlogo.png' %}" alt="" width="100" height="100"></a>
+            <!-- Navbar Toggler -->
+            <div class="classy-navbar-toggler">
+                <span class="navbarToggler"><span></span><span></span><span></span></span>
+            </div>
+            <!-- Menu -->
+            <div class="classy-menu">
+                <!-- close btn -->
+                <div class="classycloseIcon">
+                    <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                </div>
+                <!-- Nav Start -->
+                <div class="classynav">
+                    <ul>
+                        <li><a href="{% url 'fashions:brand' %}"><font size="+2"> 𝒮𝒽ℴ𝓅 </font></a>
+
+                        </li>
+                        <li><a href="#"><font size="+2"> 𝒞ℴ𝓃𝓉𝒶𝒸𝓉 </font></a></li>
+                    </ul>
+                </div>
+                <!-- Nav End -->
+            </div>
+        </nav>
+
+        <!-- Header Meta Data -->
+        <div class="header-meta d-flex clearfix justify-content-end">
+            <!-- Search Area -->
+            <!-- <div class="search-area">
+                <form action="#" method="post">
+                    <input type="search" name="search" id="headerSearch" placeholder="Type for search">
+                    <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </form>
+            </div> -->
+            <!--  -->
+            <!-- Favourite Area -->
+            <div class="favourite-area">
+                <a href="{% url 'fashions:brand_create' %}"><font size="-1"> 𝒩ℯ𝓌 ℬ𝓇𝒶𝓃𝒹 </font></a>
+            </div>
+            <!-- User Login Info -->
+            <div class="user-login-info">
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}?next={% url 'fashions:brand' %}"><font size="-1"> ℒℴℊℴ𝓊𝓉 </font></a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'fashions:brand' %}"><font size="-1"> ℒℴℊ𝒾𝓃 </font></a>                   
+                {% endif %}
+            </div>
+
+
+
+        </div>
+
+    </div>
+</header>
+
+    <!-- ##### Header Area End ##### -->
+            <!-- ##### Breadcumb Area Start ##### -->
+            <div class="breadcumb_area bg-img" style="background-image: url({% static 'img/title_br.jpg' %});">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-12">
+                            <div class="page-title text-center">
+                                <h2>Find your favorite!</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+    <!-- ##### Shop Grid Area Start ##### -->
+    <section class="shop_grid_area section-padding-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4 col-lg-3">
+                    <div class="shop_sidebar_area">
+
+                        <!-- ##### Single Widget ##### -->
+                        <div class="widget catagory mb-50">
+                            <!-- Widget Title -->
+                            <h6 class="widget-title mb-30"> 𝔸𝕣𝕞 𝕦𝕡 𝕨𝕚𝕥𝕙 𝔽𝕒𝕤𝕙𝕚𝕠𝕟! </h6>
+
+                            <!--  Catagories  -->
+                            <div class="catagories-menu">
+                                <ul id="menu-content2" class="menu-content collapse show">
+                                    <!-- Single Item -->
+                                    <li data-toggle="collapse" data-target="#gender">
+                                            <a href="#">Genders</a>
+                                            <ul class="sub-menu collapse" id="gender">
+                                                    <li><a href="{% url 'fashions:gender_create' %}"><font size="3" color="green">Add a new gender</font></a></li>
+                                                    <li><a href="{% url 'fashions:brand' %}">All</a></li>
+                                                    <p>
+                                                            {% if gender_list %}
+                                                            <ul>
+                                                              {% for gender in gender_list %}
+                                                                <li>
+                                                                    <a href="{% url 'fashions:brand_detail'  gender.id %}">{{ gender.name }}</a>
+                                                                    <br/>
+                                                                </li>
+                                                              {% endfor %}
+                                                            </ul>
+                                                            {% else %}
+                                                              <p>There are no genders currently.</p>
+                                                            {% endif %}
+                                                            </p>
+                                                </ul>                                   
+                                    <!-- Single Item -->
+                                    <li data-toggle="collapse" data-target="#country">
+                                        <a href="#">Countries</a>
+                                        <ul class="sub-menu collapse" id="country">
+                                            <li><a href="{% url 'fashions:nation_create' %}"><font size="3" color="orange">Add a new country</font></a></li>
+                                            <li><a href="{% url 'fashions:brand' %}">All</a></li>
+                                                    <p>
+                                                    {% if nation_list %}
+                                                    <ul>
+                                                      {% for nation in nation_list %}
+                                                        <li>
+                                                            <a href="{% url 'fashions:brand_detail'  nation.id %}">{{ nation.name }}</a>
+                                                            <br/>
+                                                        </li>
+                                                      {% endfor %}
+                                                    </ul>
+                                                    {% else %}
+                                                      <p>There are no nations currently.</p>
+                                                    {% endif %}
+                                                    </p>
+                                        </ul>
+                                    </li>
+                                    <!-- Single Item -->
+                                    <li data-toggle="collapse" data-target="#category">
+                                            <a href="#">Categories</a>
+                                        <ul class="sub-menu collapse" id="category">
+                                            <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
+                                            <li><a href="{% url 'fashions:brand' %}">All</a></li>
+                                            <p>
+                                                    {% if category_list %}
+                                                    <ul>
+                                                      {% for category in category_list %}
+                                                        <li>
+                                                            <a href="{% url 'fashions:brand_detail'  category.id %}">{{ category.name }}</a>
+                                                            <br/>
+                                                        </li>
+                                                      {% endfor %}
+                                                    </ul>
+                                                    {% else %}
+                                                      <p>There are no categories currently.</p>
+                                                    {% endif %}
+                                                    </p>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-8 col-lg-9">
+                    <div class="shop_grid_product_area">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="product-topbar d-flex align-items-center justify-content-between">
+                                    <!-- Total Products -->
+                                    <div class="total-products">
+                                        <p><span>Brands listed</span></p>
+                                    </div>
+                                    <!-- Sorting -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-description"><h1>Brands</h1></div>
+                        
+                        <span style="float: right;">
+                                ({{ brand.updated_at|naturaltime }})
+                                {% if brand.owner == user %}
+                                <a href="{% url 'fashions:brand_update' brand.id %}"><i class="fa fa-pencil"></i></a>
+                                <a href="{% url 'fashions:brand_delete' brand.id %}"><i class="fa fa-trash"></i></a>
+                                {% endif %}
+                                </span>
+                                <h1>{{ brand.name }}</h1>
+                                <p>
+                                {{ brand.country }}
+                                </p>
+                                <p>
+                                {{ brand.gender }}
+                                </p>
+                                <p>
+                                {{ brand.category }}
+                                </p>
+                                <p>
+                                <a href="{% url 'fashions:all' %}">All brands</a>
+                                </p>
+                                {% if brand.content_type %}
+                                <img style="float:center; max-width:50%;" src="{% url 'fashions:brand_picture' brand.id %}">
+                                {% endif %}
+                                {% if user.is_authenticated %}
+                                <br clear="all"/>
+                                {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Shop Grid Area End ##### -->
+
+{% endblock %}
