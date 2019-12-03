@@ -56,6 +56,9 @@
                     <a href="{% url 'login' %}?next={% url 'fashions:brand' %}"><font size="-1"> ℒℴℊ𝒾𝓃 </font></a>                   
                     {% endif %}
                 </div>
+    
+    
+    
             </div>
     
         </div>
@@ -94,59 +97,52 @@
                                 <ul id="menu-content2" class="menu-content collapse show">
                                     <!-- Single Item -->
                                     <li data-toggle="collapse" data-target="#gender">
-                                        <a href="#">Genders</a>
-                                        <ul class="sub-menu collapse" id="gender">
-                                                <p>
-                                                    {% for gender in gender_list %}
+                                            <a href="#">Genders</a>
+                                            <ul class="sub-menu collapse" id="gender">
+                                                    <p>
+                                                        {% for gender in gender_list %}
+                                                            <li>
+                                                                <a href="{% url 'fashions:filteredproduct' 0 gender.id 0 %}">{{ gender.name }}</a>
+                                                                <br/>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </p>
+                                                </ul>   
+                                    <!-- Single Item -->
+                                    <li data-toggle="collapse" data-target="#season">
+                                            <a href="#">Seasons</a>
+                                            <ul class="sub-menu collapse" id="season">
+                                                    <p>
+                                                        {% for season in season_list %}
+                                                            <li>
+                                                                <a href="{% url 'fashions:filteredproduct' 0 0 season.id %}">{{ season.name }}</a>
+                                                                <br/>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </p>
+                                                </ul>
+                                    </li>                                                                                  
+                                    <!-- Single Item -->
+                                    <li data-toggle="collapse" data-target="#category">
+                                            <a href="#">Categories</a>
+                                        <ul class="sub-menu collapse" id="category">
+                                            <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
+                                            <p>
+                                                    {% if category_list %}
+                                                    <ul>
+                                                      {% for category in category_list %}
                                                         <li>
-                                                            <a href="{% url 'fashions:filteredbrand' 0 gender.id 0 %}">{{ gender.name }}</a>
+                                                            <a href="{% url 'fashions:filteredproduct' category.id 0 0 %}">{{ category.name }}</a>
                                                             <br/>
                                                         </li>
-                                                    {% endfor %}
-                                                </p>
-                                            </ul>                                   
-                                <!-- Single Item -->
-                                <li data-toggle="collapse" data-target="#country">
-                                    <a href="#">Countries</a>
-                                    <ul class="sub-menu collapse" id="country">
-                                        <li><a href="{% url 'fashions:nation_create' %}"><font size="3" color="orange">Add a new country</font></a></li>
-                                                <p>
-                                                {% if nation_list %}
-                                                <ul>
-                                                  {% for nation in nation_list %}
-                                                    <li>
-                                                            <a href="{% url 'fashions:filteredbrand' 0 0 nation.id%}">{{ nation.name }}</a>
-                                                        <br/>
-                                                    </li>
-                                                  {% endfor %}
-                                                </ul>
-                                                {% else %}
-                                                  <p>There are no nations currently.</p>
-                                                {% endif %}
-                                                </p>
-                                    </ul>
-                                </li>
-                                <!-- Single Item -->
-                                <li data-toggle="collapse" data-target="#category">
-                                        <a href="#">Categories</a>
-                                    <ul class="sub-menu collapse" id="category">
-                                        <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
-                                        <p>
-                                                {% if category_list %}
-                                                <ul>
-                                                  {% for category in category_list %}
-                                                    <li>
-                                                        <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
-                                                        <br/>
-                                                    </li>
-                                                  {% endfor %}
-                                                </ul>
-                                                {% else %}
-                                                  <p>There are no categories currently.</p>
-                                                {% endif %}
-                                                </p>
-                                    </ul>
-                                </li>
+                                                      {% endfor %}
+                                                    </ul>
+                                                    {% else %}
+                                                      <p>There are no categories currently.</p>
+                                                    {% endif %}
+                                                    </p>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -160,7 +156,7 @@
                                 <div class="product-topbar d-flex align-items-center justify-content-between">
                                     <!-- Total Products -->
                                     <div class="total-products">
-                                        <p><span>Brands listed</span></p>
+                                        <p><span>Products listed</span></p>
                                     </div>
                                     <!-- Sorting -->
                                 </div>
@@ -169,48 +165,29 @@
                         <div class="product-description"></div>
                         
                         <span style="float: right;">
-                                ({{ brand.updated_at|naturaltime }})
-                                {% if brand.owner == user %}
-                                <a href="{% url 'fashions:brand_update' brand.id %}"><i class="fa fa-pencil"></i></a>
-                                <a href="{% url 'fashions:brand_delete' brand.id %}"><i class="fa fa-trash"></i></a>
+                                ({{ product.updated_at|naturaltime }})
+                                {% if product.owner == user %}
+                                <a href="{% url 'fashions:product_update' brand.id %}"><i class="fa fa-pencil"></i></a>
+                                <a href="{% url 'fashions:product_delete' brand.id %}"><i class="fa fa-trash"></i></a>
                                 {% endif %}
                         </span>
-                                <h1>{{ brand.name }}</h1>
+                                <h1>{{ product.name }}</h1>
                                 <br>
                                 <p>
-                                Country: {{ brand.nation }}
+                                Season: {{ product.season }}
                                 </p>
                                 <p>
-                                Genders: {{ brand.genders.all }}
+                                Genders: {{ product.gender}}
                                 </p>
                                 <p>
                                 Categories: {{ brand.categories.all }}
                                 </p>
                                 <p>
-                                <a href="{% url 'fashions:all' %}">All brands</a>
+                                <a href="{% url 'fashions:product' %}">All products</a>
                                 </p>
                                 {% if ad.content_type %}
-                                <img style="float:center; max-width:50%;" src="{% url 'fashions:brand_picture' brand.id %}">
+                                <img style="float:center; max-width:50%;" src="{% url 'fashions:product_picture' product.id %}">
                                 {% endif %}
-                                <li data-toggle="collapse" data-target="#product">
-                                        <a href="#">Show all products in {{ brand.name}}</a>
-                                    <ul class="sub-menu collapse" id="product">
-                                        <p>
-                                                {% if products %}
-                                                <ul>
-                                                  {% for product in products %}
-                                                    <li>
-                                                        <a href="{% url 'fashions:product_detail'  product.id %}">{{ product.name }}</a>
-                                                        <br/>
-                                                    </li>
-                                                  {% endfor %}
-                                                </ul>
-                                                {% else %}
-                                                  <p>There are no products in this brand.</p>
-                                                {% endif %}
-                                                </p>
-                                    </ul>
-                                </li>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 {% load app_tags %} <!-- see home/templatetags/app_tags.py -->
 {% load staticfiles %}
-{% load humanize %}
+
 {% block navbar %}
 <!-- https://www.w3schools.com/booTsTrap/bootstrap_navbar.asp -->
 
@@ -56,6 +56,9 @@
                     <a href="{% url 'login' %}?next={% url 'fashions:brand' %}"><font size="-1"> ℒℴℊ𝒾𝓃 </font></a>                   
                     {% endif %}
                 </div>
+    
+    
+    
             </div>
     
         </div>
@@ -160,57 +163,55 @@
                                 <div class="product-topbar d-flex align-items-center justify-content-between">
                                     <!-- Total Products -->
                                     <div class="total-products">
-                                        <p><span>Brands listed</span></p>
+                                        <p><span>Filtered Brands listed</span></p>
                                     </div>
                                     <!-- Sorting -->
                                 </div>
                             </div>
                         </div>
-                        <div class="product-description"></div>
-                        
-                        <span style="float: right;">
-                                ({{ brand.updated_at|naturaltime }})
-                                {% if brand.owner == user %}
-                                <a href="{% url 'fashions:brand_update' brand.id %}"><i class="fa fa-pencil"></i></a>
-                                <a href="{% url 'fashions:brand_delete' brand.id %}"><i class="fa fa-trash"></i></a>
-                                {% endif %}
-                        </span>
-                                <h1>{{ brand.name }}</h1>
-                                <br>
-                                <p>
-                                Country: {{ brand.nation }}
-                                </p>
-                                <p>
-                                Genders: {{ brand.genders.all }}
-                                </p>
-                                <p>
-                                Categories: {{ brand.categories.all }}
-                                </p>
-                                <p>
-                                <a href="{% url 'fashions:all' %}">All brands</a>
-                                </p>
-                                {% if ad.content_type %}
-                                <img style="float:center; max-width:50%;" src="{% url 'fashions:brand_picture' brand.id %}">
-                                {% endif %}
-                                <li data-toggle="collapse" data-target="#product">
-                                        <a href="#">Show all products in {{ brand.name}}</a>
-                                    <ul class="sub-menu collapse" id="product">
-                                        <p>
-                                                {% if products %}
-                                                <ul>
-                                                  {% for product in products %}
-                                                    <li>
-                                                        <a href="{% url 'fashions:product_detail'  product.id %}">{{ product.name }}</a>
-                                                        <br/>
-                                                    </li>
-                                                  {% endfor %}
-                                                </ul>
-                                                {% else %}
-                                                  <p>There are no products in this brand.</p>
-                                                {% endif %}
-                                                </p>
-                                    </ul>
+                        <div class="product-description"><h1>Brands</h1></div>
+                        <br>
+                        <div style="float:right">
+                            <a href="{% url 'fashions:all' %}"><i class="fa fa-undo"></i></a>
+                            </form>
+                            </div>
+                            <p>
+                            {% if brands %}
+                            <ul>
+                              {% for brand in brands %}
+                                <li>
+                                    <a href="{% url 'fashions:brand_detail'  brand.id %}">{{ brand.name }}</a>
+                                    {% if brand.owner == user %}
+                                    (<a href="{% url 'fashions:brand_update' brand.id %}">Edit</a> |
+                                    <a href="{% url 'fashions:brand_delete' brand.id %}">Delete</a>)
+                                    </p>
+                                    {% endif %}
+                                    <br/>
+                                    <div style="left:10px">
+                                        {% if brand.description|length < 100 %}
+                                            {{ brand.description }}
+                                        {% else %}
+                                            {{ brand.description|slice:"0:99" }}
+                                            <a href="{% url 'fashions:brand_detail'  brand.id %}">...</a>
+                                        {% endif %}
+                                    </div>
                                 </li>
+                              {% endfor %}
+                            </ul>
+                            {% else %}
+                              <p>There are no brands under your selection.</p>
+                            {% endif %}
+                            </p>
+                            <p>
+                            <a href="{% url 'fashions:brand_create' %}">Add a brand</a> |
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}?next={% url 'fashions:all' %}">Logout</a>
+                            {% else %}
+                            <a href="{% url 'login' %}?next={% url 'fashions:all' %}">Login</a>
+                            {% endif %}
+                            </p>
+                            
+                    </div>
                 </div>
             </div>
         </div>

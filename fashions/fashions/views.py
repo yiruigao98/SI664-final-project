@@ -133,18 +133,25 @@ class CategoryCreateView(LoginRequiredMixin, View):
 class FilteredBrandView(OwnerListView):
     model = Brand
     template_name = "fashions/filtered_brand_list.html"
-    def get(self, request, category_pk, gender_pk):
-        if(category_pk is not -1): 
+    def get(self, request, category_pk, gender_pk, nation_pk):
+        if(category_pk != 0): 
             category = Category.objects.get(id=category_pk)
-        if(gender_pk is not -1): 
+        if(gender_pk != 0): 
             gender = Gender.objects.get(id=gender_pk)
-        if(gender_pk == -1):
-            brands = Brand.objects.filter(Category=category).order_by('-updated_at')
-        elif(category_pk == -1):
-            brands = Brand.objects.filter(Gender=gender).order_by('-updated_at')
+        if(nation_pk != 0): 
+            nation = Nation.objects.get(id=nation_pk)
+        if(gender_pk == 0 and nation_pk == 0):
+            brands = Brand.objects.filter(categories__in=[category.id]).order_by('-updated_at')
+        elif(category_pk == 0 and nation_pk == 0):
+            brands = Brand.objects.filter(genders__in=[gender.id]).order_by('-updated_at')
+        elif(category_pk == 0 and gender_pk == 0):
+            brands = Brand.objects.filter(nation__id=nation.id).order_by('-updated_at')
         else:
-            brands = Brand.objects.filter(Category=category, Gender=gender).order_by('-updated_at')
-        context = { 'brands' : brands}
+            brands = Brand.objects.filter(categories=category, genders=gender, nation=nation).order_by('-updated_at')
+        gender_list = Gender.objects.all()
+        nation_list = Nation.objects.all()
+        category_list = Category.objects.all()
+        context = { 'brands' : brands, 'gender_list': gender_list, 'nation_list' : nation_list, 'category_list' : category_list}
         return render(request, self.template_name, context)
 
 # class BrandView(LoginRequiredMixin, View):
@@ -237,22 +244,37 @@ class FilteredProductView(OwnerListView):
     model = Product
     template_name = "fashions/filtered_product_list.html"
     def get(self, request, category_pk, gender_pk, season_pk):
-        if(category_pk is not -1): 
+        if(category_pk != 0): 
             category = Category.objects.get(id=category_pk)
-        if(gender_pk is not -1): 
+        if(gender_pk != 0): 
             gender = Gender.objects.get(id=gender_pk)
-        if(gender_pk == -1):
-            products = Product.objects.filter(Category=category).order_by('-updated_at')
-        elif(category_pk == -1):
-            products = Product.objects.filter(Gender=gender).order_by('-updated_at')
+        if(season_pk != 0): 
+            season = Season.objects.get(id=season_pk)
+        if(gender_pk == 0 and season_pk == 0):
+            products = Product.objects.filter(categories=category).order_by('-updated_at')
+        elif(category_pk == 0 and season_pk == 0):
+            products = Product.objects.filter(gender=gender).order_by('-updated_at')
+        elif(category_pk == 0 and gender_pk == 0):
+            products = Product.objects.filter(season=season).order_by('-updated_at')
         else:
-            products = Product.objects.filter(Category=category, Gender=gender).order_by('-updated_at')
-        context = { 'products' : products}
+            products = Product.objects.filter(categories=category, genders=gender, season=season).order_by('-updated_at')
+        gender_list = Gender.objects.all()
+        season_list = Season.objects.all()
+        category_list = Category.objects.all()
+        context = { 'products' : products, 'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list}
         return render(request, self.template_name, context)
 
 class ProductView(OwnerListView):
     model = Product
     template_name = "fashions/product_list.html"
+    def get(self, request) :
+        products = Product.objects.all()
+        brands = Brand.objects.all()
+        gender_list = Gender.objects.all()
+        season_list = Season.objects.all()
+        category_list = Category.objects.all()
+        context = { 'products' : products,'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, 'brands' : brands }
+        return render(request, self.template_name, context)
 
 class ProductDetailView(OwnerDetailView):
     model = Product
@@ -261,7 +283,11 @@ class ProductDetailView(OwnerDetailView):
         product = Product.objects.get(id=pk)
         comments = CommentRating.objects.filter(product=product).order_by('-updated_at')
         comment_form = CommentForm()
-        context = { 'product' : product, 'comments': comments, 'comment_form': comment_form }
+        gender_list = Gender.objects.all()
+        season_list = Season.objects.all()
+        category_list = Category.objects.all()
+        brand_list = Brand.objects.all()
+        context = { 'product' : product, 'comments': comments, 'comment_form': comment_form, 'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, 'brand_list' : brand_list }
         return render(request, self.template_name, context)
 
 class ProductCreateView(LoginRequiredMixin, View):

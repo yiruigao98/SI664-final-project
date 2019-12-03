@@ -127,7 +127,7 @@ class Product(models.Model) :
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    categories = models.ManyToManyField(Category, help_text='Choose the categories this brand have')
+    categories = models.ManyToManyField(Category, help_text='Choose the categories this product has')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     picture = models.BinaryField(null=True, editable=True, blank=True)

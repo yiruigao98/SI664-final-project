@@ -69,7 +69,7 @@
                     <div class="row h-100 align-items-center">
                         <div class="col-12">
                             <div class="page-title text-center">
-                                <h2>Create your Brand!</h2>
+                                <h2>Create your Product!</h2>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" value="Submit">
-        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'fashions:all' %}';return false;">
+        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'fashions:product' %}';return false;">
     </form>
     </p>
 </div>
