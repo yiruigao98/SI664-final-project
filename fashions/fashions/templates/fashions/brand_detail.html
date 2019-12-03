@@ -132,19 +132,19 @@
                                     <ul class="sub-menu collapse" id="category">
                                         <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
                                         <p>
-                                                {% if category_list %}
-                                                <ul>
-                                                  {% for category in category_list %}
-                                                    <li>
-                                                        <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
-                                                        <br/>
-                                                    </li>
-                                                  {% endfor %}
-                                                </ul>
-                                                {% else %}
-                                                  <p>There are no categories currently.</p>
-                                                {% endif %}
-                                                </p>
+                                            {% if category_list %}
+                                            <ul>
+                                                {% for category in category_list %}
+                                                <li>
+                                                    <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
+                                                    <br/>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% else %}
+                                                <p>There are no categories currently.</p>
+                                            {% endif %}
+                                        </p>
                                     </ul>
                                 </li>
                                 </ul>
@@ -178,18 +178,42 @@
                                 <h1>{{ brand.name }}</h1>
                                 <br>
                                 <p>
-                                Country: {{ brand.nation }}
+                                    <h3> Country: </h3> {{ brand.nation }}
                                 </p>
                                 <p>
-                                Genders: {{ brand.genders.all }}
+                                    <h3>Genders: </h3>
+                                    {% if brand_genders %}
+                                    <ul>
+                                        {% for gender in brand_genders %}
+                                        <li>
+                                            <a href="{% url 'fashions:filteredbrand' 0 gender.id 0 %}">{{ gender.name }}</a>
+                                            <br/>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% else %}
+                                        <p>There are no categories currently.</p>
+                                    {% endif %}
                                 </p>
                                 <p>
-                                Categories: {{ brand.categories.all }}
+                                    <h3>Categories: </h3>
+                                    {% if brand_categories %}
+                                    <ul>
+                                        {% for category in brand_categories %}
+                                        <li>
+                                            <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
+                                            <br/>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% else %}
+                                        <p>There are no categories currently.</p>
+                                    {% endif %}
                                 </p>
                                 <p>
                                 <a href="{% url 'fashions:all' %}">All brands</a>
                                 </p>
-                                {% if ad.content_type %}
+                                {% if brand.content_type %}
                                 <img style="float:center; max-width:50%;" src="{% url 'fashions:brand_picture' brand.id %}">
                                 {% endif %}
                                 <li data-toggle="collapse" data-target="#product">

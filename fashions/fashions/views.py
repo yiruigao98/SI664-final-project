@@ -177,7 +177,11 @@ class BrandDetailView(OwnerDetailView):
         gender_list = Gender.objects.all()
         nation_list = Nation.objects.all()
         category_list = Category.objects.all()
-        context = { 'brand': brand, 'products': products, 'gender_list': gender_list, 'nation_list' : nation_list, 'category_list' : category_list}
+        brand_categories = brand.categories.all()
+        brand_genders = brand.genders.all()
+        context = { 'brand': brand, 'products': products, 'gender_list': gender_list, \
+            'nation_list' : nation_list, 'category_list' : category_list, 'brand_categories': brand_categories, \
+                'brand_genders' : brand_genders}
         return render(request, self.template_name, context)
 
 class BrandCreateView(LoginRequiredMixin, View):
@@ -199,6 +203,7 @@ class BrandCreateView(LoginRequiredMixin, View):
         brand = form.save(commit=False)
         brand.owner = self.request.user
         brand.save()
+        form.save_m2m()
         return redirect(self.success_url)
 
 class BrandUpdateView(OwnerUpdateView):
@@ -287,7 +292,10 @@ class ProductDetailView(OwnerDetailView):
         season_list = Season.objects.all()
         category_list = Category.objects.all()
         brand_list = Brand.objects.all()
-        context = { 'product' : product, 'comments': comments, 'comment_form': comment_form, 'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, 'brand_list' : brand_list }
+        product_categories = product.categories.all()
+        context = { 'product' : product, 'comments': comments, 'comment_form': comment_form, \
+            'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, \
+                'brand_list' : brand_list, 'product_categories': product_categories}
         return render(request, self.template_name, context)
 
 class ProductCreateView(LoginRequiredMixin, View):
@@ -309,6 +317,7 @@ class ProductCreateView(LoginRequiredMixin, View):
         product = form.save(commit=False)
         product.owner = self.request.user
         product.save()
+        form.save_m2m()
         return redirect(self.success_url)
 
 class ProductUpdateView(OwnerUpdateView):

@@ -56,9 +56,18 @@ class BrandCreateForm(forms.ModelForm):
     picture = forms.FileField(required=False, label='File to Upload <= '+max_upload_limit_text)
     upload_field_name = 'picture'
 
+    def __init__ (self, *args, **kwargs):
+        super(BrandCreateForm, self).__init__(*args, **kwargs)
+        self.fields["categories"].widget = forms.widgets.CheckboxSelectMultiple()
+        self.fields["categories"].help_text = ""
+        self.fields["categories"].queryset = Category.objects.all()
+        self.fields["genders"].widget = forms.widgets.CheckboxSelectMultiple()
+        self.fields["genders"].help_text = ""
+        self.fields["genders"].queryset = Gender.objects.all()
+
     class Meta:
         model = Brand
-        fields = ['name', 'discription','categories', 'nation', 'genders', 'picture']  # Picture is manual
+        fields = ['name', 'discription','categories', 'genders', 'nation', 'picture']  # Picture is manual
 
     # Validate the size of the picture
     def clean(self) :
@@ -71,14 +80,12 @@ class BrandCreateForm(forms.ModelForm):
     # Convert uploaded File object to a picture
     def save(self, commit=True) :
         instance = super(BrandCreateForm, self).save(commit=False)
-
         # We only need to adjust picture if it is a freshly uploaded file
         f = instance.picture   # Make a copy
         if isinstance(f, InMemoryUploadedFile):  # Extract data from the form to the model
             bytearr = f.read()#;
             instance.content_type = f.content_type
             instance.picture = bytearr  # Overwrite with the actual image data
-
         if commit:
             instance.save()
 
@@ -94,6 +101,11 @@ class ProductCreateForm(forms.ModelForm):
     # because we need to pull out things like content_type
     picture = forms.FileField(required=False, label='File to Upload <= '+max_upload_limit_text)
     upload_field_name = 'picture'
+    def __init__ (self, *args, **kwargs):
+        super(ProductCreateForm, self).__init__(*args, **kwargs)
+        self.fields["categories"].widget = forms.widgets.CheckboxSelectMultiple()
+        self.fields["categories"].help_text = ""
+        self.fields["categories"].queryset = Category.objects.all()
 
     class Meta:
         model = Product
@@ -124,10 +136,10 @@ class ProductCreateForm(forms.ModelForm):
         return instance
 
 class CommentForm(forms.Form):
-    comment = forms.CharField(required=False, max_length=500, min_length=3, strip=True)
+    comment = forms.CharField(required=False, label = "My Comment Text", max_length=500, min_length=3, strip=True)
     rating = forms.IntegerField(
         required = True,
-        label = 5,
+        label = 'My Rating',
         validators=[
             MaxValueValidator(5),
             MinValueValidator(0)
