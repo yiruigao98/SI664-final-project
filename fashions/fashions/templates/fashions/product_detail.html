@@ -175,6 +175,9 @@
                                 <h1>{{ product.name }}</h1>
                                 <br>
                                 <p>
+                                    <h3>Rating: </h3> <B><I><font size="+2"> {{average_rating}} </font></B></I>
+                                </p>
+                                <p>
                                     <h3>Season: </h3> {{ product.season }}
                                 </p>
                                 <p>
@@ -201,7 +204,7 @@
                                 <img style="float:center; max-width:50%;" src="{% url 'fashions:product_picture' product.id %}">
                                 {% endif %}
 
-                                
+
                                 <br>
                                 {% if user.is_authenticated %}
                                 <h3><B><I> Add My Comment </B></I></h3>

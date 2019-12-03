@@ -10,7 +10,7 @@ from fashions.models import Gender, Nation, Season, Category, Brand, Product, Co
 from fashions.forms import BrandCreateForm, ProductCreateForm, NationCreateForm, CategoryCreateForm, GenderCreateForm
 from fashions.forms import CommentForm
 from django.urls import reverse
-
+import pdb
 
 ###############################################
 ################ Nation #######################
@@ -293,9 +293,12 @@ class ProductDetailView(OwnerDetailView):
         category_list = Category.objects.all()
         brand_list = Brand.objects.all()
         product_categories = product.categories.all()
+        average_rating = 0.0
+        for comment in comments:
+            average_rating += comment.rating/len(comments)
         context = { 'product' : product, 'comments': comments, 'comment_form': comment_form, \
             'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, \
-                'brand_list' : brand_list, 'product_categories': product_categories}
+                'brand_list' : brand_list, 'product_categories': product_categories, 'average_rating': average_rating}
         return render(request, self.template_name, context)
 
 class ProductCreateView(LoginRequiredMixin, View):
