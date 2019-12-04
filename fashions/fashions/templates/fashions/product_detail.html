@@ -167,12 +167,13 @@
                         
                         <span style="float: right;">
                                 ({{ product.updated_at|naturaltime }})
-                                {% if product.owner == user %}
-                                <a href="{% url 'fashions:product_update' brand.id %}"><i class="fa fa-pencil"></i></a>
-                                <a href="{% url 'fashions:product_delete' brand.id %}"><i class="fa fa-trash"></i></a>
+                                {% if user == product.brand.owner %}
+                                <a href="{% url 'fashions:product_update' product.id %}"><i class="fa fa-pencil"></i></a>
+                                <a href="{% url 'fashions:product_delete' product.id %}"><i class="fa fa-trash"></i></a>
                                 {% endif %}
                         </span>
                                 <h1>{{ product.name }}</h1>
+                                {{ product.description }}
                                 <br>
                                 <p>
                                     <h3>Rating: </h3> <B><I><font size="+2"> {{average_rating}} </font></B></I>
@@ -188,7 +189,7 @@
                                     <ul>
                                         {% for category in product_categories %}
                                         <li>
-                                            <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
+                                            <a href="{% url 'fashions:filteredproduct' category.id 0 0 %}">{{ category.name }}</a>
                                             <br/>
                                         </li>
                                         {% endfor %}
@@ -200,10 +201,24 @@
                                 <p>
                                 <a href="{% url 'fashions:product' %}">All products</a>
                                 </p>
-                                {% if product.content_type %}
-                                <img style="float:center; max-width:50%;" src="{% url 'fashions:product_picture' product.id %}">
+                                
+                                {% if user == product.brand.owner %}
+                                    <a href="{% url 'fashions:product_image_create' product.id%}">Add a Image</a> 
                                 {% endif %}
 
+                                <h3><B><I>Images:</B></I></h3>
+                                {% if images %}
+                                {% for image in images %}
+                                <p> 
+                                    {% if image.content_type %}
+                                    <img style="float:center; max-width:50%;" src="{% url 'fashions:product_picture' image.id %}">
+                                    {% if user == product.brand.owner %}
+                                    <a href="{% url 'fashions:product_image_delete' image.id %}"><i class="fa fa-trash"></i></a>
+                                    {% endif %}
+                                    {% endif %}
+                                </p>
+                                {% endfor %}
+                                {% endif %}
 
                                 <br>
                                 {% if user.is_authenticated %}
@@ -225,7 +240,7 @@
                                     {{ comment.text }}
                                     ({{ comment.updated_at|naturaltime }})
                                     {% if user == comment.owner %}
-                                    <a href="{% url 'fashions:product_comment_create' comment.id %}"><i class="fa fa-trash"></i></a>
+                                    <a href="{% url 'fashions:product_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
                                     {% endif %}
                                 </p>
                                 {% endfor %}

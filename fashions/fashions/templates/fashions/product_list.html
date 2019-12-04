@@ -172,9 +172,9 @@
                             <ul>
                               {% for product in products %}
                                 <li>
-                                    <a href="{% url 'fashions:product_detail'  product.id %}">{{ product.name }}</a>
-                                    {% if product.owner == user %}
-                                    (<a href="{% url 'fashions:productupdate' product.id %}">Edit</a> |
+                                    <a href="{% url 'fashions:product_detail'  product.id %}">{{ product.name }} ({{product.brand.name}})</a>
+                                    {% if product.brand.owner == user %}
+                                    (<a href="{% url 'fashions:product_update' product.id %}">Edit</a> |
                                     <a href="{% url 'fashions:product_delete' product.id %}">Delete</a>)
                                     </p>
                                     {% endif %}

@@ -70,8 +70,8 @@ class Season(models.Model) :
             max_length=200,
             validators=[MinLengthValidator(2, "Title must be greater than 2 characters")]
     )
-    discription = models.TextField(
-        validators=[MinLengthValidator(3, "Discription must be greater than 3 characters")]
+    description = models.TextField(
+        validators=[MinLengthValidator(3, "Description must be greater than 3 characters")]
     )
     # Shows up in the admin list
     def __str__(self):
@@ -82,8 +82,8 @@ class Category(models.Model) :
             max_length=200,
             validators=[MinLengthValidator(2, "Title must be greater than 2 characters")]
     )
-    discription = models.TextField(
-        validators=[MinLengthValidator(3, "Discription must be greater than 3 characters")]
+    description = models.TextField(
+        validators=[MinLengthValidator(3, "Description must be greater than 3 characters")]
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -96,8 +96,8 @@ class Brand(models.Model) :
             max_length=200,
             validators=[MinLengthValidator(2, "Title must be greater than 2 characters")]
     )
-    discription = models.TextField(
-        validators=[MinLengthValidator(3, "Discription must be greater than 3 characters")]
+    description = models.TextField(
+        validators=[MinLengthValidator(3, "Description must be greater than 3 characters")]
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nation = models.ForeignKey(Nation, on_delete=models.CASCADE, null=True)
@@ -117,8 +117,8 @@ class Product(models.Model) :
             max_length=200,
             validators=[MinLengthValidator(2, "Title must be greater than 2 characters")]
     )
-    discription = models.TextField(
-        validators=[MinLengthValidator(3, "Discription must be greater than 3 characters")]
+    description = models.TextField(
+        validators=[MinLengthValidator(3, "Description must be greater than 3 characters")]
     )
     comments = models.ManyToManyField(settings.AUTH_USER_MODEL,
         through='CommentRating', related_name='CommentRatings_owned')
@@ -130,9 +130,20 @@ class Product(models.Model) :
     categories = models.ManyToManyField(Category, help_text='Choose the categories this product has')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # Shows up in the admin list
+    def __str__(self):
+        return self.name
+
+class ProductImage(models.Model):
+    name = models.CharField(
+            max_length=200,
+            validators=[MinLengthValidator(2, "Title must be greater than 2 characters")]
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     picture = models.BinaryField(null=True, editable=True, blank=True)
     content_type = models.CharField(max_length=256, null=True, help_text='The MIMEType of the file')
-    # Shows up in the admin list
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
 

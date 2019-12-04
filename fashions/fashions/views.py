@@ -6,8 +6,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from fashions.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
-from fashions.models import Gender, Nation, Season, Category, Brand, Product, CommentRating
-from fashions.forms import BrandCreateForm, ProductCreateForm, NationCreateForm, CategoryCreateForm, GenderCreateForm
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
+from fashions.models import Gender, Nation, Season, Category, Brand, Product, CommentRating, ProductImage
+from fashions.forms import BrandCreateForm, ProductCreateForm, NationCreateForm, CategoryCreateForm, GenderCreateForm,  ImageCreateForm
 from fashions.forms import CommentForm
 from django.urls import reverse
 import pdb
@@ -285,6 +286,7 @@ class ProductDetailView(OwnerDetailView):
     model = Product
     template_name = "fashions/product_detail.html"
     def get(self, request, pk) :
+        
         product = Product.objects.get(id=pk)
         comments = CommentRating.objects.filter(product=product).order_by('-updated_at')
         comment_form = CommentForm()
@@ -293,12 +295,15 @@ class ProductDetailView(OwnerDetailView):
         category_list = Category.objects.all()
         brand_list = Brand.objects.all()
         product_categories = product.categories.all()
+        images = ProductImage.objects.filter(product=product).order_by('-updated_at')
+        # pdb.set_trace()
         average_rating = 0.0
         for comment in comments:
             average_rating += comment.rating/len(comments)
         context = { 'product' : product, 'comments': comments, 'comment_form': comment_form, \
             'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, \
-                'brand_list' : brand_list, 'product_categories': product_categories, 'average_rating': average_rating}
+                'brand_list' : brand_list, 'product_categories': product_categories, 'average_rating': average_rating, \
+                'images' : images}
         return render(request, self.template_name, context)
 
 class ProductCreateView(LoginRequiredMixin, View):
@@ -327,13 +332,13 @@ class ProductUpdateView(OwnerUpdateView):
     template = "fashions/product_form.html"
     success_url = reverse_lazy('fashions:product')
     def get(self, request, pk) :
-        product = get_object_or_404(Product, id=pk, owner=self.request.user)
-        form = BrandCreateForm(instance=product)
+        product = get_object_or_404(Product, id=pk)
+        form = ProductCreateForm(instance=product)
         ctx = {'form': form }
         return render(request, self.template, ctx)
 
     def post(self, request, pk=None) :
-        product = get_object_or_404(Product, id=pk, owner=self.request.user)
+        product = get_object_or_404(Product, id=pk)
         form = ProductCreateForm(request.POST, request.FILES or None, instance=product)
 
         if not form.is_valid() :
@@ -345,19 +350,46 @@ class ProductUpdateView(OwnerUpdateView):
 
         return redirect(self.success_url)
 
-class ProductDeleteView(OwnerDeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "fashions/product_delete.html"
 
+#######################
 
-def Product_stream_file(request, pk) :
-    product = get_object_or_404(Product, id=pk)
+class ImageCreateView(LoginRequiredMixin, View):
+    template = "fashions/image_form.html"
+    def get(self, request, pk=None) :
+        form = ImageCreateForm()
+        ctx = { 'form': form } 
+        return render(request, self.template, ctx)
+
+    def post(self, request, pk=None) :
+        form = ImageCreateForm(request.POST, request.FILES or None)
+        if not form.is_valid() :
+            ctx = {'form' : form}
+            return render(request, self.template, ctx)
+
+        # Add owner to the model before saving
+        image = form.save(commit=False)
+        image.product = Product.objects.get(id=pk)
+        image.save()
+        return redirect(reverse('fashions:product_detail', args=[pk]))
+
+
+class ImageDeleteView(LoginRequiredMixin, DeleteView):
+    model = ProductImage
+    template_name = "fashions/image_delete.html"
+    def get_success_url(self):
+        product = self.object.product
+        return reverse('fashions:product_detail', args=[product.id])
+
+def Image_stream_file(request, pk) :
+    productimage = get_object_or_404(ProductImage, id=pk)
     response = HttpResponse()
-    response['Content-Type'] = product.content_type
-    response['Content-Length'] = len(product.picture)
-    response.write(product.picture)
+    response['Content-Type'] = productimage.content_type
+    response['Content-Length'] = len(productimage.picture)
+    response.write(productimage.picture)
     return response
-
 
 #######################
 
