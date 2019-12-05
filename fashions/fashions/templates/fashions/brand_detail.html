@@ -30,7 +30,6 @@
                             <li><a href="{% url 'fashions:brand' %}"><font size="+2"> 𝒮𝒽ℴ𝓅 </font></a>
     
                             </li>
-                            <li><a href="#"><font size="+2"> 𝒞ℴ𝓃𝓉𝒶𝒸𝓉 </font></a></li>
                         </ul>
                     </div>
                     <!-- Nav End -->
@@ -41,12 +40,12 @@
             <div class="header-meta d-flex clearfix justify-content-end">
                 <!-- Search Area -->
                 <div class="favourite-area">
-                    <a href="{% url 'fashions:brand' %}"><font size="-1"> ℬ𝓇𝒶𝓃𝒹 </font></a>
+                    <a href="{% url 'fashions:brand' %}"><font size="-1"> ℬ𝓇𝒶𝓃𝒹𝓈 </font></a>
                 </div>
                 <!--  -->
                 <!-- Favourite Area -->
                 <div class="favourite-area">
-                    <a href="{% url 'fashions:product' %}"><font size="-1"> 𝒫𝓇ℴ𝒹𝓊𝒸𝓉 </font></a>
+                    <a href="{% url 'fashions:product' %}"><font size="-1"> 𝒫𝓇ℴ𝒹𝓊𝒸𝓉𝓈 </font></a>
                 </div>
                 <!-- User Login Info -->
                 <div class="user-login-info">
@@ -78,7 +77,9 @@
 
 
     <!-- ##### Shop Grid Area Start ##### -->
-    <section class="shop_grid_area section-padding-80">
+    <section class="shop_grid_area section-padding-80"><style> .widget{
+            background-color: rgb(252, 250, 243);
+          }</style>
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-4 col-lg-3">
@@ -86,70 +87,81 @@
 
                         <!-- ##### Single Widget ##### -->
                         <div class="widget catagory mb-50">
-                            <!-- Widget Title -->
-                            <h6 class="widget-title mb-30"> 𝔸𝕣𝕞 𝕦𝕡 𝕨𝕚𝕥𝕙 𝔽𝕒𝕤𝕙𝕚𝕠𝕟! </h6>
-
-                            <!--  Catagories  -->
-                            <div class="catagories-menu">
-                                <ul id="menu-content2" class="menu-content collapse show">
-                                    <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#gender">
-                                        <a href="#">Genders</a>
-                                        <ul class="sub-menu collapse" id="gender">
-                                                <p>
-                                                    {% for gender in gender_list %}
-                                                        <li>
-                                                            <a href="{% url 'fashions:filteredbrand' 0 gender.id 0 %}">{{ gender.name }}</a>
+                                <a><img src="{% static 'img/fashion.png' %}" alt="" width="150" height="150"></a>
+                                <br>
+                                <br>
+                                <h6 class="widget-title mb-30"> Filter up your brands! </h6>
+    
+                                <!--  Catagories  -->
+                                <div class="catagories-menu">
+                                    <ul id="menu-content2" class="menu-content collapse show">
+                                        <!-- Single Item -->
+                                        <li data-toggle="collapse" data-target="#gender">
+                                                <a href="#"> <style> .sidetitle {
+                                                        background-color: rgb(230, 230, 230);
+                                                      }</style> <div class = "sidetitle"><font size="3"> Genders  </font><img src="{% static 'img/gender.png' %}" alt="" width="50" height="50">  
+                                                      </div></a>
+                                                <ul class="sub-menu collapse" id="gender">
+                                                        <p>
+                                                            {% for gender in gender_list %}
+                                                                    <li class = "sidelist">
+                                                                    <a href="{% url 'fashions:filteredbrand' 0 gender.id 0 %}"><B>{{ gender.name }}</B></a>
+                                                                    </li>
+                                                                    <br/>
+                                                            {% endfor %}
+                                                        </p>
+                                                    </ul>                                   
+                                        <!-- Single Item -->
+                                        <li data-toggle="collapse" data-target="#country">
+                                                <a href="#"> <style> .sidetitle {
+                                                        background-color: rgb(230, 230, 230);
+                                                      }</style> <div class = "sidetitle"> <font size="3"> Countries  </font> <img src="{% static 'img/country.png' %}" alt="" width="25" height="25"> 
+                                                      </div></a>
+                                            <ul class="sub-menu collapse" id="country">
+                                                <a href="{% url 'fashions:nation_create' %}"><font size="3" color="orange">Add a new country</font></a>
+                                                        <p>
+                                                        {% if nation_list %}
+                                                        <ul>
+                                                          {% for nation in nation_list %}
+                                                            <li class = "sidelist">
+                                                                    <a href="{% url 'fashions:filteredbrand' 0 0 nation.id%}"><B>{{ nation.name }}</B></a>
+                                                            </li>
                                                             <br/>
-                                                        </li>
-                                                    {% endfor %}
-                                                </p>
-                                            </ul>                                   
-                                <!-- Single Item -->
-                                <li data-toggle="collapse" data-target="#country">
-                                    <a href="#">Countries</a>
-                                    <ul class="sub-menu collapse" id="country">
-                                        <li><a href="{% url 'fashions:nation_create' %}"><font size="3" color="orange">Add a new country</font></a></li>
-                                                <p>
-                                                {% if nation_list %}
-                                                <ul>
-                                                  {% for nation in nation_list %}
-                                                    <li>
-                                                            <a href="{% url 'fashions:filteredbrand' 0 0 nation.id%}">{{ nation.name }}</a>
-                                                        <br/>
-                                                    </li>
-                                                  {% endfor %}
-                                                </ul>
-                                                {% else %}
-                                                  <p>There are no nations currently.</p>
-                                                {% endif %}
-                                                </p>
-                                    </ul>
-                                </li>
-                                <!-- Single Item -->
-                                <li data-toggle="collapse" data-target="#category">
-                                        <a href="#">Categories</a>
-                                    <ul class="sub-menu collapse" id="category">
-                                        <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
-                                        <p>
-                                            {% if category_list %}
-                                            <ul>
-                                                {% for category in category_list %}
-                                                <li>
-                                                    <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
-                                                    <br/>
-                                                </li>
-                                                {% endfor %}
+                                                          {% endfor %}
+                                                        </ul>
+                                                        {% else %}
+                                                          <p>There are no nations currently.</p>
+                                                        {% endif %}
+                                                        </p>
                                             </ul>
-                                            {% else %}
-                                                <p>There are no categories currently.</p>
-                                            {% endif %}
-                                        </p>
+                                        </li>
+                                        <!-- Single Item -->
+                                        <li data-toggle="collapse" data-target="#category">
+                                                <a href="#"> <style> .sidetitle {
+                                                        background-color: rgb(230, 230, 230);
+                                                      }</style> <div class = "sidetitle"><font size="3"> Categories </font> <img src="{% static 'img/category.png' %}" alt="" width="30" height="30">
+                                                      </div></a>
+                                            <ul class="sub-menu collapse" id="category">
+                                                <a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a>
+                                                <p>
+                                                        {% if category_list %}
+                                                        <ul>
+                                                          {% for category in category_list %}
+                                                            <li class = "sidelist">
+                                                                <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}"><B>{{ category.name }}</B></a>
+                                                            </li>
+                                                            <br/>
+                                                          {% endfor %}
+                                                        </ul>
+                                                        {% else %}
+                                                          <p>There are no categories currently.</p>
+                                                        {% endif %}
+                                                        </p>
+                                            </ul>
+                                        </li>
                                     </ul>
-                                </li>
-                                </ul>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
 
@@ -166,29 +178,54 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="product-description"></div>
-                        
+                        <style> .protitle{
+                                padding: 3px;
+                                border: 5px double #1C6EA4;
+                              }
+                              .smalltitle{
+                                padding: 3px;
+                                border-left: 6px solid red;
+                                background-color: lightgrey;
+                              }
+                        </style>
+
+                        <div class="product-description"><font size="+5"><span class = "protitle">{{ brand.name }}</span></font></div>
+                        <br>
+                        <br>
+
                         <span style="float: right;">
                                 ({{ brand.updated_at|naturaltime }})
                                 {% if brand.owner == user %}
                                 <a href="{% url 'fashions:brand_update' brand.id %}"><i class="fa fa-pencil"></i></a>
                                 <a href="{% url 'fashions:brand_delete' brand.id %}"><i class="fa fa-trash"></i></a>
                                 {% endif %}
+                                <br>
+                                <br>
+                                <br>
+                                {% if brand.content_type %}
+                                <img style="float:left; max-width:100%;" src="{% url 'fashions:brand_picture' brand.id %}">
+                                {% endif %}
                         </span>
-                                <h1>{{ brand.name }}</h1>
-                                {{ brand.description }}
+
+                                <font size="+2">{{ brand.description }}</font>
                                 <br>
                                 <p>
-                                    <h3> Country: </h3> {{ brand.nation }}
+                                    <div class="product-description"><font size="+1"><span class = "smalltitle"> Country </span></font></div>
+                                    <br>
+                                    <ul>
+                                    <li class = "sidelist">
+                                        <a href="{% url 'fashions:filteredbrand' 0 0 brand.nation.id %}"><font size="+1">{{ brand.nation }}</font></a>
+                                    </li>
+                                    </ul>
                                 </p>
                                 <p>
-                                    <h3>Genders: </h3>
+                                    <div class="product-description"><font size="+1"><span class = "smalltitle"> Genders </span></font></div>
+                                    <br>
                                     {% if brand_genders %}
                                     <ul>
                                         {% for gender in brand_genders %}
-                                        <li>
-                                            <a href="{% url 'fashions:filteredbrand' 0 gender.id 0 %}">{{ gender.name }}</a>
-                                            <br/>
+                                        <li class = "sidelist">
+                                            <a href="{% url 'fashions:filteredbrand' 0 gender.id 0 %}"><font size="+1">{{ gender.name }}</font></a>
                                         </li>
                                         {% endfor %}
                                     </ul>
@@ -197,13 +234,13 @@
                                     {% endif %}
                                 </p>
                                 <p>
-                                    <h3>Categories: </h3>
+                                    <div class="product-description"><font size="+1"><span class = "smalltitle"> Categories </span></font></div>
+                                    <br>
                                     {% if brand_categories %}
                                     <ul>
                                         {% for category in brand_categories %}
-                                        <li>
-                                            <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}">{{ category.name }}</a>
-                                            <br/>
+                                        <li class = "sidelist">
+                                            <a href="{% url 'fashions:filteredbrand' category.id 0 0 %}"><font size="+1">{{ category.name }}</font></a>
                                         </li>
                                         {% endfor %}
                                     </ul>
@@ -212,20 +249,18 @@
                                     {% endif %}
                                 </p>
                                 <p>
-                                <a href="{% url 'fashions:all' %}">All brands</a>
+                                <a href="{% url 'fashions:all' %}"><font size="+1" color = "lightgreen">All brands</font></a>
                                 </p>
-                                {% if brand.content_type %}
-                                <img style="float:center; max-width:50%;" src="{% url 'fashions:brand_picture' brand.id %}">
-                                {% endif %}
+
                                 <li data-toggle="collapse" data-target="#product">
-                                        <a href="#">Show all products in {{ brand.name}}</a>
+                                              <a href="#">Show all products in {{ brand.name}}</a>
                                     <ul class="sub-menu collapse" id="product">
                                         <p>
                                                 {% if products %}
                                                 <ul>
                                                   {% for product in products %}
-                                                    <li>
-                                                        <a href="{% url 'fashions:product_detail'  product.id %}">{{ product.name }}</a>
+                                                    <li class = "sidelist2">
+                                                        <a href="{% url 'fashions:product_detail'  product.id %}"><font size="+1">{{ product.name }}</font></a>
                                                         <br/>
                                                     </li>
                                                   {% endfor %}

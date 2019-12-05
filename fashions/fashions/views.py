@@ -13,6 +13,7 @@ from fashions.forms import CommentForm
 from django.urls import reverse
 import pdb
 
+
 ###############################################
 ################ Nation #######################
 ###############################################

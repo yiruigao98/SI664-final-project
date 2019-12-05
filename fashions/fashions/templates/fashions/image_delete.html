@@ -1,11 +1,108 @@
 {% extends "fashions/base_menu.html" %}
-{% block content %}
-<h1>Delete Image</h1>
 
-<p>Are you sure you want to delete the image: {{ productimage }}?</p>
+{% load app_tags %} <!-- see home/templatetags/app_tags.py -->
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load humanize %}
 
-<form action="" method="POST">
-  {% csrf_token %}
-  <input type="submit" value="Yes, delete.">
-</form>
+{% block navbar %}
+<nav class="navbar navbar-default"></nav>
+<header class="header_area">
+        <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar" id="essenceNav">
+                <!-- Logo -->
+                <a class="nav-brand" href="#"><img src="{% static 'KJlogo.png' %}" alt="" width="100" height="100"></a>
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            <li><a href="{% url 'fashions:brand' %}"><font size="+2"> 𝒮𝒽ℴ𝓅 </font></a>
+    
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+    
+            <!-- Header Meta Data -->
+            <div class="header-meta d-flex clearfix justify-content-end">
+                <!-- Search Area -->
+                <div class="favourite-area">
+                    <a href="{% url 'fashions:brand' %}"><font size="-1"> ℬ𝓇𝒶𝓃𝒹 </font></a>
+                </div>
+                <!--  -->
+                <!-- Favourite Area -->
+                <div class="favourite-area">
+                    <a href="{% url 'fashions:product' %}"><font size="-1"> 𝒫𝓇ℴ𝒹𝓊𝒸𝓉 </font></a>
+                </div>
+                <!-- User Login Info -->
+                <div class="user-login-info">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}?next={% url 'fashions:brand' %}"><font size="-1"> ℒℴℊℴ𝓊𝓉 </font></a>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'fashions:brand' %}"><font size="-1"> ℒℴℊ𝒾𝓃 </font></a>                   
+                    {% endif %}
+                </div>
+    
+    
+    
+            </div>
+    
+        </div>
+    </header>
+
+    <!-- ##### Header Area End ##### -->
+            <!-- ##### Breadcumb Area Start ##### -->
+            <div class="breadcumb_area bg-img" style="background-image: url({% static 'img/title_br.jpg' %});">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-12">
+                            <div class="page-title text-center">
+                                <h2> Keep talking! </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ##### Shop Grid Area Start ##### -->
+    <section class="shop_grid_area section-padding-80"><style> .widget{
+        background-color: rgb(252, 250, 243);
+      }</style>
+    <div class="container">
+        <div class="row">
+
+
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="shop_grid_product_area">
+
+                    
+                    <span style="float: right;">
+                        <img style="float:right; max-width:50%;" src="{% static 'img/sadboy.png' %}">
+                    </span>
+                    <br>
+                    <h1><font size="+3"> Delete Image </font></h1>
+                    <p><font size="+1"> Are you sure you want to delete the image: {{ productimage }}? </font></p>
+
+                    <form action="" method="POST">
+                      {% csrf_token %}
+                      <input type="submit" value="Yes, delete.">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

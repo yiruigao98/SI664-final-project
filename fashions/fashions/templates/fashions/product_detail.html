@@ -9,7 +9,6 @@
 
 <nav class="navbar navbar-default"></nav>
 <header class="header_area">
-
         <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
             <!-- Classy Menu -->
             <nav class="classy-navbar" id="essenceNav">
@@ -31,7 +30,6 @@
                             <li><a href="{% url 'fashions:brand' %}"><font size="+2"> 𝒮𝒽ℴ𝓅 </font></a>
     
                             </li>
-                            <li><a href="#"><font size="+2"> 𝒞ℴ𝓃𝓉𝒶𝒸𝓉 </font></a></li>
                         </ul>
                     </div>
                     <!-- Nav End -->
@@ -82,73 +80,86 @@
 
 
     <!-- ##### Shop Grid Area Start ##### -->
-    <section class="shop_grid_area section-padding-80">
+    <section class="shop_grid_area section-padding-80"><style> .widget{
+            background-color: rgb(252, 250, 243);
+          }</style>
         <div class="container">
             <div class="row">
-                <div class="col-12 col-md-4 col-lg-3">
-                    <div class="shop_sidebar_area">
-
-                        <!-- ##### Single Widget ##### -->
-                        <div class="widget catagory mb-50">
-                            <!-- Widget Title -->
-                            <h6 class="widget-title mb-30"> 𝔸𝕣𝕞 𝕦𝕡 𝕨𝕚𝕥𝕙 𝔽𝕒𝕤𝕙𝕚𝕠𝕟! </h6>
-
-                            <!--  Catagories  -->
-                            <div class="catagories-menu">
-                                <ul id="menu-content2" class="menu-content collapse show">
-                                    <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#gender">
-                                            <a href="#">Genders</a>
-                                            <ul class="sub-menu collapse" id="gender">
-                                                    <p>
-                                                        {% for gender in gender_list %}
-                                                            <li>
-                                                                <a href="{% url 'fashions:filteredproduct' 0 gender.id 0 %}">{{ gender.name }}</a>
+                    <div class="col-12 col-md-4 col-lg-3">
+                            <div class="shop_sidebar_area">
+        
+                                <!-- ##### Single Widget ##### -->
+                                <div class="widget catagory mb-50">
+                                    <a><img src="{% static 'img/fashion.png' %}" alt="" width="150" height="150"></a>
+                                    <br>
+                                    <br>
+                                    <h6 class="widget-title mb-30"> Filter up your products! </h6>
+        
+                                    <!--  Catagories  -->
+                                    <div class="catagories-menu">
+                                        <ul id="menu-content2" class="menu-content collapse show">
+                                            <!-- Single Item -->
+                                            <li data-toggle="collapse" data-target="#gender">
+                                                    <a href="#"> <style> .sidetitle {
+                                                            background-color: rgb(230, 230, 230);
+                                                          }</style> <div class = "sidetitle"><font size="3"> Genders  </font><img src="{% static 'img/gender.png' %}" alt="" width="50" height="50">  
+                                                          </div></a>
+                                                    <ul class="sub-menu collapse" id="gender">
+                                                            <p>
+                                                                {% for gender in gender_list %}
+                                                                    <li class = "sidelist">
+                                                                        <a href="{% url 'fashions:filteredproduct' 0 gender.id 0 %}"><B>{{ gender.name }}</B></a>
+                                                                        </li>
+                                                                        <br/>
+                                                                {% endfor %}
+                                                            </p>
+                                                        </ul>   
+                                            <!-- Single Item -->
+                                            <li data-toggle="collapse" data-target="#season">
+                                                    <a href="#"> <style> .sidetitle {
+                                                            background-color: rgb(230, 230, 230);
+                                                          }</style> <div class = "sidetitle"> <font size="3"> Seasons  </font> <img src="{% static 'img/season.png' %}" alt="" width="60" height="60"> 
+                                                          </div></a>
+                                                    <ul class="sub-menu collapse" id="season">
+                                                            <p>
+                                                                {% for season in season_list %}
+                                                                <li class = "sidelist">
+                                                                        <a href="{% url 'fashions:filteredproduct' 0 0 season.id%}"><B>{{ season.name }}</B></a>
+                                                                </li>
                                                                 <br/>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </p>
-                                                </ul>   
-                                    <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#season">
-                                            <a href="#">Seasons</a>
-                                            <ul class="sub-menu collapse" id="season">
+                                                                {% endfor %}
+                                                            </p>
+                                                        </ul>
+                                            </li>                                                                                  
+                                            <!-- Single Item -->
+                                            <li data-toggle="collapse" data-target="#category">
+                                                    <a href="#"> <style> .sidetitle {
+                                                            background-color: rgb(230, 230, 230);
+                                                          }</style> <div class = "sidetitle"><font size="3"> Categories </font> <img src="{% static 'img/category.png' %}" alt="" width="30" height="30">
+                                                          </div></a>
+                                                <ul class="sub-menu collapse" id="category">
+                                                    <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
                                                     <p>
-                                                        {% for season in season_list %}
-                                                            <li>
-                                                                <a href="{% url 'fashions:filteredproduct' 0 0 season.id %}">{{ season.name }}</a>
+                                                            {% if category_list %}
+                                                            <ul>
+                                                              {% for category in category_list %}
+                                                                <li class = "sidelist">
+                                                                    <a href="{% url 'fashions:filteredproduct' category.id 0 0 %}"><B>{{ category.name }}</B></a>
+                                                                </li>
                                                                 <br/>
-                                                            </li>
-                                                        {% endfor %}
-                                                    </p>
+                                                              {% endfor %}
+                                                            </ul>
+                                                            {% else %}
+                                                              <p>There are no categories currently.</p>
+                                                            {% endif %}
+                                                            </p>
                                                 </ul>
-                                    </li>                                                                                  
-                                    <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#category">
-                                            <a href="#">Categories</a>
-                                        <ul class="sub-menu collapse" id="category">
-                                            <li><a href="{% url 'fashions:category_create' %}"><font size="3" color="red">Add a new category</font></a></li>
-                                            <p>
-                                                    {% if category_list %}
-                                                    <ul>
-                                                      {% for category in category_list %}
-                                                        <li>
-                                                            <a href="{% url 'fashions:filteredproduct' category.id 0 0 %}">{{ category.name }}</a>
-                                                            <br/>
-                                                        </li>
-                                                      {% endfor %}
-                                                    </ul>
-                                                    {% else %}
-                                                      <p>There are no categories currently.</p>
-                                                    {% endif %}
-                                                    </p>
+                                            </li>
                                         </ul>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
                 <div class="col-12 col-md-8 col-lg-9">
                     <div class="shop_grid_product_area">
@@ -163,7 +174,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="product-description"></div>
+                        <style> .protitle{
+                                padding: 3px;
+                                border: 5px double #1C6EA4;
+                               }
+                               .smalltitle{
+                                padding: 3px;
+                                border-left: 6px solid red;
+                                background-color: lightgrey;
+                               }
+                               .shadow {
+                                    -webkit-border-radius: 0% 0% 100% 100% / 0% 0% 8px 8px;
+                                    -webkit-box-shadow: rgba(0, 0, 0,.30) 0 2px 3px;
+                               }
+                                .comment_list {
+                                    padding: 10px;
+                                    margin: 0 auto;
+                                    margin-top: 5px;;
+
+                                    height: 5vh * len(comments);
+                                    background: #F2F2F2;
+                                    border: 1px solid #ccc;
+                                    box-shadow: 1px 1px 2px #fff inset,
+                                                -1px -1px 2px #fff inset;
+                                    border-radius: 3px/6px;                                             
+                                }
+                         </style>
+                        <div class="product-description"><font size="+4"><span class = "protitle">{{ product.name }}</span></font></div>
+                        <br>
+                        <br>
                         
                         <span style="float: right;">
                                 ({{ product.updated_at|naturaltime }})
@@ -172,41 +211,57 @@
                                 <a href="{% url 'fashions:product_delete' product.id %}"><i class="fa fa-trash"></i></a>
                                 {% endif %}
                         </span>
-                                <h1>{{ product.name }}</h1>
-                                {{ product.description }}
+                        <font size="+2">{{ product.description }}</font>
+                        <br>
+                        <br>
+                        <br>
+                                <div class="product-description"><font size="+1"><span class = "smalltitle"> Rating </span></font></div>
                                 <br>
+                                <B><I><font size="+2"><div class = "fancyrating" style="float:center">{{average_rating}}</div> </font></B></I>
                                 <p>
-                                    <h3>Rating: </h3> <B><I><font size="+2"> {{average_rating}} </font></B></I>
-                                </p>
-                                <p>
-                                    <h3>Season: </h3> {{ product.season }}
-                                </p>
-                                <p>
-                                    <h3>Gender: </h3> {{ product.gender }}
-                                <p>
-                                    <h3>Categories: </h3>
-                                    {% if product_categories %}
-                                    <ul>
-                                        {% for category in product_categories %}
-                                        <li>
-                                            <a href="{% url 'fashions:filteredproduct' category.id 0 0 %}">{{ category.name }}</a>
-                                            <br/>
+                                        <div class="product-description"><font size="+1"><span class = "smalltitle"> Season </span></font></div>
+                                        <br>
+                                        <ul>
+                                        <li class = "sidelist">
+                                            <a href="{% url 'fashions:filteredproduct' 0 0 product.season.id %}"><font size="+1">{{ product.season }}</font></a>
                                         </li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% else %}
-                                        <p>There are no categories currently.</p>
-                                    {% endif %}
-                                </p>
-                                <p>
-                                <a href="{% url 'fashions:product' %}">All products</a>
-                                </p>
-                                
-                                {% if user == product.brand.owner %}
-                                    <a href="{% url 'fashions:product_image_create' product.id%}">Add a Image</a> 
-                                {% endif %}
+                                        </ul>
+                                    </p>
+                                    <p>
+                                            <div class="product-description"><font size="+1"><span class = "smalltitle"> Gender </span></font></div>
+                                            <br>
+                                            <ul>
+                                            <li class = "sidelist">
+                                                <a href="{% url 'fashions:filteredproduct' 0 product.gender.id 0 %}"><font size="+1">{{ product.gender }}</font></a>
+                                            </li>
+                                            </ul>
+                                        </p>
+                                        <p>
+                                                <div class="product-description"><font size="+1"><span class = "smalltitle"> Categories </span></font></div>
+                                                <br>
+                                                {% if product_categories %}
+                                                <ul>
+                                                    {% for category in product_categories %}
+                                                    <li class = "sidelist">
+                                                        <a href="{% url 'fashions:filteredproduct' category.id 0 0 %}"><font size="+1">{{ category.name }}</font></a>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                                {% else %}
+                                                    <p>There are no categories currently.</p>
+                                                {% endif %}
+                                            </p>
+                                    
 
-                                <h3><B><I>Images:</B></I></h3>
+                                
+
+
+                                <div class="product-description"><font size="+1"><span class = "smalltitle"> Images </span></font></div>
+                                <br>
+                                {% if user == product.brand.owner %}
+                                <a href="{% url 'fashions:product_image_create' product.id%}"><font size="+1"> Add an Image </font></a> 
+                                {% endif %}
+                                <br>
                                 {% if images %}
                                 {% for image in images %}
                                 <p> 
@@ -222,7 +277,7 @@
 
                                 <br>
                                 {% if user.is_authenticated %}
-                                <h3><B><I> Add My Comment </B></I></h3>
+                                <div class="product-description"><font size="+1"><span class = "smalltitle"> Add your Comment </span></font></div>
                                 <p>
                                 <form method="post" action="{% url 'fashions:product_comment_create' product.id %}">
                                     {% csrf_token %}
@@ -233,17 +288,24 @@
                                 {% endif %}
 
                                 <br>
-                                <h3><B><I>Comments:</B></I></h3>
-                                {% for comment in comments %}
-                                <p> 
-                                    <h4> <B><I><font size="+2"> {{comment.rating}} </font></B></I> {{comment.owner}}:</h4>
-                                    {{ comment.text }}
-                                    ({{ comment.updated_at|naturaltime }})
-                                    {% if user == comment.owner %}
-                                    <a href="{% url 'fashions:product_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
-                                    {% endif %}
+                                <div class="product-description"><font size="+1"><span class = "smalltitle"> Previous comments </span></font></div>
+                                <div class = "shadow">
+                                    <div class = "comment_list">
+                                    {% for comment in comments %}
+                                    <p> 
+                                        <h4> <B><I><font size="+2"> {{comment.rating}} </font></B></I> {{comment.owner}}:</h4>
+                                        {{ comment.text }}
+                                        ({{ comment.updated_at|naturaltime }})
+                                        {% if user == comment.owner %}
+                                        <a href="{% url 'fashions:product_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+                                        {% endif %}
+                                    </p>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                                <p>
+                                    <a href="{% url 'fashions:product' %}"><font size="+1" color = "lightgreen">All products</font></a>
                                 </p>
-                                {% endfor %}
                 </div>
             </div>
         </div>
