@@ -300,6 +300,7 @@ class ProductDetailView(OwnerDetailView):
         average_rating = 0.0
         for comment in comments:
             average_rating += comment.rating/len(comments)
+        average_rating = round(average_rating, 2)
         context = { 'product' : product, 'comments': comments, 'comment_form': comment_form, \
             'gender_list': gender_list, 'season_list' : season_list, 'category_list' : category_list, \
                 'brand_list' : brand_list, 'product_categories': product_categories, 'average_rating': average_rating, \
@@ -310,12 +311,12 @@ class ProductCreateView(LoginRequiredMixin, View):
     template = "fashions/product_form.html"
     success_url = reverse_lazy('fashions:product')
     def get(self, request, pk=None) :
-        form = ProductCreateForm()
+        form = ProductCreateForm(request.user)
         ctx = {'form': form } 
         return render(request, self.template, ctx)
 
     def post(self, request, pk=None) :
-        form = ProductCreateForm(request.POST, request.FILES or None)
+        form = ProductCreateForm(request.user, request.POST, request.FILES or None)
 
         if not form.is_valid() :
             ctx = {'form' : form}

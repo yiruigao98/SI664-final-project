@@ -81,11 +81,14 @@ class BrandCreateForm(forms.ModelForm):
 
 # Create the form class.
 class ProductCreateForm(forms.ModelForm):
-    def __init__ (self, *args, **kwargs):
+    def __init__ (self, user, *args, **kwargs):
+        self.user = user
         super(ProductCreateForm, self).__init__(*args, **kwargs)
         self.fields["categories"].widget = forms.widgets.CheckboxSelectMultiple()
         self.fields["categories"].help_text = ""
         self.fields["categories"].queryset = Category.objects.all()
+        self.fields["brand"].help_text = ""
+        self.fields["brand"].queryset = Brand.objects.filter(owner = self.user)
 
     class Meta:
         model = Product
