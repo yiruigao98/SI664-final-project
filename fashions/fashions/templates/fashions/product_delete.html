@@ -96,7 +96,7 @@
                     
                     <p><font size="+1"> Are you sure you want to delete the product: {{ product }}? </font></p>
                     
-                    
+                    <form action="" method="POST">
                       {% csrf_token %}
                       <input type="submit" value="Yes, delete.">
                     </form>
